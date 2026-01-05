@@ -26,6 +26,12 @@
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
         body {
             font-family: 'DM Sans', sans-serif;
             background: linear-gradient(135deg, var(--bg-light) 0%, #f0ece6 100%);
@@ -100,6 +106,8 @@
             font-size: 0.95rem;
             transition: all 0.3s ease;
             position: relative;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
         }
 
         .filter-btn:hover {
@@ -187,6 +195,22 @@
             box-shadow: 0 6px 16px rgba(0,0,0,0.15);
         }
 
+        .event:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        @media (hover: none) and (pointer: coarse) {
+            .event:hover {
+                transform: none;
+            }
+            
+            .event:active {
+                transform: scale(0.98);
+                opacity: 0.9;
+            }
+        }
+
         .event.course {
             background: linear-gradient(135deg, var(--primary) 0%, #2a4a62 100%);
         }
@@ -247,6 +271,14 @@
             font-size: 0.95rem;
             margin-bottom: 0.25rem;
             letter-spacing: 0.02em;
+        }
+
+        .event-subtitle {
+            font-weight: 600;
+            font-size: 0.85rem;
+            opacity: 0.95;
+            margin-bottom: 0.25rem;
+            font-style: italic;
         }
 
         .event-details {
@@ -418,15 +450,217 @@
 
         @media (max-width: 1024px) {
             .schedule-grid {
-                display: block;
-            }
-
-            .day-header {
-                display: block;
+                grid-template-columns: 70px 1fr;
             }
 
             h1 {
                 font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 2rem 1rem 1.5rem;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .subtitle {
+                font-size: 0.95rem;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+
+            .stat-card {
+                padding: 1rem;
+            }
+
+            .stat-value {
+                font-size: 2rem;
+            }
+
+            .controls {
+                gap: 0.75rem;
+            }
+
+            .filter-btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.85rem;
+            }
+
+            .schedule-grid {
+                display: block;
+                gap: 0;
+            }
+
+            .time-cell {
+                display: none;
+            }
+
+            .day-section {
+                background: var(--bg-card);
+                margin-bottom: 1rem;
+                border-radius: 12px;
+                overflow: hidden;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            }
+
+            .day-header {
+                padding: 1rem;
+                text-align: left;
+                position: sticky;
+                top: 0;
+                z-index: 10;
+            }
+
+            .event-cell {
+                padding: 0.5rem;
+                min-height: auto;
+            }
+
+            .event {
+                margin-bottom: 0.75rem;
+            }
+
+            .event-title {
+                font-size: 0.9rem;
+            }
+
+            .event-details {
+                font-size: 0.75rem;
+            }
+
+            .legend {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1.5rem;
+            }
+
+            .legend-item {
+                gap: 0.5rem;
+            }
+
+            .legend-color {
+                width: 35px;
+                height: 35px;
+            }
+
+            .modal-content {
+                width: 95%;
+                padding: 2rem 1.5rem;
+            }
+
+            .modal-header {
+                font-size: 1.5rem;
+                padding-right: 2rem;
+            }
+        }
+
+        /* Mobile-specific day grouping */
+        @media (max-width: 768px) {
+            .mobile-day-group {
+                background: var(--bg-card);
+                margin-bottom: 1rem;
+                border-radius: 12px;
+                overflow: hidden;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+                animation: fadeIn 0.5s ease;
+            }
+
+            .mobile-day-header {
+                background: linear-gradient(135deg, var(--primary) 0%, #2a4a62 100%);
+                color: white;
+                padding: 1rem 1.25rem;
+                font-family: 'Crimson Pro', serif;
+                font-size: 1.2rem;
+                font-weight: 600;
+                position: sticky;
+                top: 0;
+                z-index: 10;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .mobile-day-count {
+                background: rgba(255,255,255,0.2);
+                padding: 0.25rem 0.75rem;
+                border-radius: 20px;
+                font-size: 0.85rem;
+                font-weight: 500;
+            }
+
+            .mobile-events {
+                padding: 0.75rem;
+            }
+
+            .mobile-event-wrapper {
+                margin-bottom: 0.75rem;
+            }
+
+            .mobile-event-wrapper:last-child {
+                margin-bottom: 0;
+            }
+        }
+
+        /* Extra small phones */
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .subtitle {
+                font-size: 0.85rem;
+                line-height: 1.4;
+            }
+
+            .header {
+                padding: 1.5rem 1rem;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-btn {
+                padding: 0.5rem 0.85rem;
+                font-size: 0.8rem;
+                flex: 1;
+                min-width: 0;
+            }
+
+            .controls {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .event-title {
+                font-size: 0.85rem;
+            }
+
+            .event-details {
+                font-size: 0.7rem;
+            }
+
+            .modal-content {
+                padding: 1.5rem 1rem;
+            }
+
+            .modal-header {
+                font-size: 1.3rem;
+            }
+
+            .legend-label {
+                font-size: 0.9rem;
             }
         }
 
@@ -514,8 +748,9 @@
             <!-- 8:00 AM -->
             <div class="time-cell">8:00 AM</div>
             <div class="event-cell">
-                <div class="event course" data-type="course" data-info='{"title":"ECO5428-01","time":"8:00 AM - 9:15 AM","location":"BEL 0204","type":"Course","days":"MW"}'>
+                <div class="event course" data-type="course" data-info='{"title":"ECO5428-01","courseName":"Time Series Analysis","time":"8:00 AM - 9:15 AM","location":"BEL 0204","type":"Course","days":"MW"}'>
                     <div class="event-title">ECO5428-01</div>
+                    <div class="event-subtitle">Time Series Analysis</div>
                     <div class="event-details">
                         <div class="event-time">8:00 AM - 9:15 AM</div>
                         <div>BEL 0204</div>
@@ -531,8 +766,9 @@
                 </div>
             </div>
             <div class="event-cell">
-                <div class="event course" data-type="course" data-info='{"title":"ECO5428-01","time":"8:00 AM - 9:15 AM","location":"BEL 0204","type":"Course","days":"MW"}'>
+                <div class="event course" data-type="course" data-info='{"title":"ECO5428-01","courseName":"Time Series Analysis","time":"8:00 AM - 9:15 AM","location":"BEL 0204","type":"Course","days":"MW"}'>
                     <div class="event-title">ECO5428-01</div>
+                    <div class="event-subtitle">Time Series Analysis</div>
                     <div class="event-details">
                         <div class="event-time">8:00 AM - 9:15 AM</div>
                         <div>BEL 0204</div>
@@ -559,8 +795,9 @@
             <!-- 9:20 AM -->
             <div class="time-cell">9:20 AM</div>
             <div class="event-cell">
-                <div class="event course" data-type="course" data-info='{"title":"MAP5932-04","time":"9:20 AM - 10:10 AM","location":"HCB 0307","type":"Course","days":"MWF"}'>
+                <div class="event course" data-type="course" data-info='{"title":"MAP5932-04","courseName":"Stochastic Algorithms in Data Science","time":"9:20 AM - 10:10 AM","location":"HCB 0307","type":"Course","days":"MWF"}'>
                     <div class="event-title">MAP5932-04</div>
+                    <div class="event-subtitle">Stochastic Algorithms in Data Science</div>
                     <div class="event-details">
                         <div class="event-time">9:20 AM - 10:10 AM</div>
                         <div>HCB 0307</div>
@@ -576,8 +813,9 @@
                 </div>
             </div>
             <div class="event-cell">
-                <div class="event course" data-type="course" data-info='{"title":"MAP5932-04","time":"9:20 AM - 10:10 AM","location":"HCB 0307","type":"Course","days":"MWF"}'>
+                <div class="event course" data-type="course" data-info='{"title":"MAP5932-04","courseName":"Stochastic Algorithms in Data Science","time":"9:20 AM - 10:10 AM","location":"HCB 0307","type":"Course","days":"MWF"}'>
                     <div class="event-title">MAP5932-04</div>
+                    <div class="event-subtitle">Stochastic Algorithms in Data Science</div>
                     <div class="event-details">
                         <div class="event-time">9:20 AM - 10:10 AM</div>
                         <div>HCB 0307</div>
@@ -593,8 +831,9 @@
                 </div>
             </div>
             <div class="event-cell">
-                <div class="event course" data-type="course" data-info='{"title":"MAP5932-04","time":"9:20 AM - 10:10 AM","location":"HCB 0307","type":"Course","days":"MWF"}'>
+                <div class="event course" data-type="course" data-info='{"title":"MAP5932-04","courseName":"Stochastic Algorithms in Data Science","time":"9:20 AM - 10:10 AM","location":"HCB 0307","type":"Course","days":"MWF"}'>
                     <div class="event-title">MAP5932-04</div>
+                    <div class="event-subtitle">Stochastic Algorithms in Data Science</div>
                     <div class="event-details">
                         <div class="event-time">9:20 AM - 10:10 AM</div>
                         <div>HCB 0307</div>
@@ -613,8 +852,9 @@
                 </div>
             </div>
             <div class="event-cell">
-                <div class="event course" data-type="course" data-info='{"title":"MAP5932-03","time":"9:45 AM - 11:00 AM","location":"LOV 0232","type":"Course","days":"TR"}'>
+                <div class="event course" data-type="course" data-info='{"title":"MAP5932-03","courseName":"Stochastic Analysis","time":"9:45 AM - 11:00 AM","location":"LOV 0232","type":"Course","days":"TR"}'>
                     <div class="event-title">MAP5932-03</div>
+                    <div class="event-subtitle">Stochastic Analysis</div>
                     <div class="event-details">
                         <div class="event-time">9:45 AM - 11:00 AM</div>
                         <div>LOV 0232</div>
@@ -630,8 +870,9 @@
                 </div>
             </div>
             <div class="event-cell">
-                <div class="event course" data-type="course" data-info='{"title":"MAP5932-03","time":"9:45 AM - 11:00 AM","location":"LOV 0232","type":"Course","days":"TR"}'>
+                <div class="event course" data-type="course" data-info='{"title":"MAP5932-03","courseName":"Stochastic Analysis","time":"9:45 AM - 11:00 AM","location":"LOV 0232","type":"Course","days":"TR"}'>
                     <div class="event-title">MAP5932-03</div>
+                    <div class="event-subtitle">Stochastic Analysis</div>
                     <div class="event-details">
                         <div class="event-time">9:45 AM - 11:00 AM</div>
                         <div>LOV 0232</div>
@@ -816,8 +1057,9 @@
                 </div>
             </div>
             <div class="event-cell">
-                <div class="event course" data-type="course" data-info='{"title":"MAP6939-04","time":"1:20 PM - 2:10 PM","location":"LOV 0106","type":"Course","days":"F"}'>
+                <div class="event course" data-type="course" data-info='{"title":"MAP6939-04","courseName":"Data Science and Machine Learning","time":"1:20 PM - 2:10 PM","location":"LOV 0106","type":"Course","days":"F"}'>
                     <div class="event-title">MAP6939-04</div>
+                    <div class="event-subtitle">Data Science and Machine Learning</div>
                     <div class="event-details">
                         <div class="event-time">1:20 PM - 2:10 PM</div>
                         <div>LOV 0106</div>
@@ -922,8 +1164,9 @@
                 </div>
             </div>
             <div class="event-cell">
-                <div class="event course" data-type="course" data-info='{"title":"MAP5615-01","time":"4:50 PM - 6:05 PM","location":"LOV 0301","type":"Course","days":"TR"}'>
+                <div class="event course" data-type="course" data-info='{"title":"MAP5615-01","courseName":"Monte Carlo Fin Math","time":"4:50 PM - 6:05 PM","location":"LOV 0301","type":"Course","days":"TR"}'>
                     <div class="event-title">MAP5615-01</div>
+                    <div class="event-subtitle">Monte Carlo Fin Math</div>
                     <div class="event-details">
                         <div class="event-time">4:50 PM - 6:05 PM</div>
                         <div>LOV 0301</div>
@@ -939,8 +1182,9 @@
                 </div>
             </div>
             <div class="event-cell">
-                <div class="event course" data-type="course" data-info='{"title":"MAP5615-01","time":"4:50 PM - 6:05 PM","location":"LOV 0301","type":"Course","days":"TR"}'>
+                <div class="event course" data-type="course" data-info='{"title":"MAP5615-01","courseName":"Monte Carlo Fin Math","time":"4:50 PM - 6:05 PM","location":"LOV 0301","type":"Course","days":"TR"}'>
                     <div class="event-title">MAP5615-01</div>
+                    <div class="event-subtitle">Monte Carlo Fin Math</div>
                     <div class="event-details">
                         <div class="event-time">4:50 PM - 6:05 PM</div>
                         <div>LOV 0301</div>
@@ -1005,6 +1249,126 @@
     </div>
 
     <script>
+        // Mobile layout reorganization
+        function reorganizeForMobile() {
+            const scheduleGrid = document.querySelector('.schedule-grid');
+            const isMobile = window.innerWidth <= 768;
+
+            if (isMobile && !scheduleGrid.classList.contains('mobile-organized')) {
+                // Create mobile day groups
+                const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+                const dayEvents = {
+                    'Monday': [],
+                    'Tuesday': [],
+                    'Wednesday': [],
+                    'Thursday': [],
+                    'Friday': []
+                };
+
+                // Collect all events by day
+                document.querySelectorAll('.event').forEach(event => {
+                    const info = JSON.parse(event.dataset.info);
+                    if (info.days) {
+                        info.days.split('').forEach(day => {
+                            const dayName = day === 'M' ? 'Monday' :
+                                          day === 'T' ? 'Tuesday' :
+                                          day === 'W' ? 'Wednesday' :
+                                          day === 'R' ? 'Thursday' :
+                                          day === 'F' ? 'Friday' : null;
+                            if (dayName) {
+                                dayEvents[dayName].push(event.cloneNode(true));
+                            }
+                        });
+                    } else {
+                        // For events without days specified, get from parent structure
+                        const parent = event.closest('.event-cell');
+                        const dayIndex = Array.from(parent.parentElement.children).indexOf(parent) - 1;
+                        if (dayIndex >= 0 && dayIndex < days.length) {
+                            dayEvents[days[dayIndex]].push(event.cloneNode(true));
+                        }
+                    }
+                });
+
+                // Clear and rebuild for mobile
+                scheduleGrid.innerHTML = '';
+                
+                days.forEach(day => {
+                    if (dayEvents[day].length > 0) {
+                        const dayGroup = document.createElement('div');
+                        dayGroup.className = 'mobile-day-group';
+                        
+                        const dayHeader = document.createElement('div');
+                        dayHeader.className = 'mobile-day-header';
+                        dayHeader.innerHTML = `
+                            <span>${day}</span>
+                            <span class="mobile-day-count">${dayEvents[day].length} events</span>
+                        `;
+                        
+                        const eventsContainer = document.createElement('div');
+                        eventsContainer.className = 'mobile-events';
+                        
+                        // Sort events by time
+                        dayEvents[day].sort((a, b) => {
+                            const timeA = JSON.parse(a.dataset.info).time.split(' - ')[0];
+                            const timeB = JSON.parse(b.dataset.info).time.split(' - ')[0];
+                            return timeA.localeCompare(timeB);
+                        });
+                        
+                        dayEvents[day].forEach(event => {
+                            const wrapper = document.createElement('div');
+                            wrapper.className = 'mobile-event-wrapper';
+                            wrapper.appendChild(event);
+                            eventsContainer.appendChild(wrapper);
+                        });
+                        
+                        dayGroup.appendChild(dayHeader);
+                        dayGroup.appendChild(eventsContainer);
+                        scheduleGrid.appendChild(dayGroup);
+                    }
+                });
+
+                scheduleGrid.classList.add('mobile-organized');
+                
+                // Re-attach event listeners
+                attachEventListeners();
+            } else if (!isMobile && scheduleGrid.classList.contains('mobile-organized')) {
+                // Reload page to restore desktop view
+                location.reload();
+            }
+        }
+
+        // Attach event listeners to all events
+        function attachEventListeners() {
+            document.querySelectorAll('.event').forEach(event => {
+                event.removeEventListener('click', handleEventClick);
+                event.addEventListener('click', handleEventClick);
+            });
+        }
+
+        function handleEventClick(e) {
+            const event = e.currentTarget;
+            const info = JSON.parse(event.dataset.info);
+            document.getElementById('modalTitle').textContent = info.title;
+            
+            // Add course name if available
+            if (info.courseName) {
+                document.getElementById('modalTitle').innerHTML = info.title + '<br><small style="font-size: 0.7em; font-weight: 400; opacity: 0.8;">' + info.courseName + '</small>';
+            }
+            
+            document.getElementById('modalTime').textContent = info.time;
+            document.getElementById('modalLocation').textContent = info.location || 'TBD';
+            document.getElementById('modalType').textContent = info.type;
+            
+            if (info.instructor) {
+                document.getElementById('modalInstructorSection').style.display = 'block';
+                document.getElementById('modalInstructor').textContent = info.instructor;
+            } else {
+                document.getElementById('modalInstructorSection').style.display = 'none';
+            }
+
+            document.getElementById('eventModal').style.display = 'block';
+        }
+
         // Filter functionality
         const filterBtns = document.querySelectorAll('.filter-btn');
         const events = document.querySelectorAll('.event');
@@ -1016,39 +1380,40 @@
                 filterBtns.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
 
-                events.forEach(event => {
+                document.querySelectorAll('.event').forEach(event => {
                     if (filter === 'all') {
                         event.style.display = 'block';
+                        if (event.closest('.mobile-event-wrapper')) {
+                            event.closest('.mobile-event-wrapper').style.display = 'block';
+                        }
                     } else {
                         if (event.dataset.type === filter) {
                             event.style.display = 'block';
+                            if (event.closest('.mobile-event-wrapper')) {
+                                event.closest('.mobile-event-wrapper').style.display = 'block';
+                            }
                         } else {
                             event.style.display = 'none';
+                            if (event.closest('.mobile-event-wrapper')) {
+                                event.closest('.mobile-event-wrapper').style.display = 'none';
+                            }
                         }
+                    }
+                });
+
+                // Update day counts on mobile
+                document.querySelectorAll('.mobile-day-group').forEach(group => {
+                    const visibleEvents = group.querySelectorAll('.event[style*="display: block"], .event:not([style*="display: none"])').length;
+                    const countBadge = group.querySelector('.mobile-day-count');
+                    if (countBadge) {
+                        countBadge.textContent = `${visibleEvents} events`;
                     }
                 });
             });
         });
 
         // Modal functionality
-        events.forEach(event => {
-            event.addEventListener('click', () => {
-                const info = JSON.parse(event.dataset.info);
-                document.getElementById('modalTitle').textContent = info.title;
-                document.getElementById('modalTime').textContent = info.time;
-                document.getElementById('modalLocation').textContent = info.location || 'TBD';
-                document.getElementById('modalType').textContent = info.type;
-                
-                if (info.instructor) {
-                    document.getElementById('modalInstructorSection').style.display = 'block';
-                    document.getElementById('modalInstructor').textContent = info.instructor;
-                } else {
-                    document.getElementById('modalInstructorSection').style.display = 'none';
-                }
-
-                document.getElementById('eventModal').style.display = 'block';
-            });
-        });
+        attachEventListeners();
 
         function closeModal() {
             document.getElementById('eventModal').style.display = 'none';
@@ -1062,9 +1427,20 @@
 
         // Animation on load
         document.addEventListener('DOMContentLoaded', () => {
-            events.forEach((event, index) => {
+            reorganizeForMobile();
+            
+            document.querySelectorAll('.event').forEach((event, index) => {
                 event.style.animationDelay = `${index * 0.05}s`;
             });
+        });
+
+        // Reorganize on resize
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                reorganizeForMobile();
+            }, 250);
         });
     </script>
 </body>
