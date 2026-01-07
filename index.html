@@ -1,1447 +1,1803 @@
+<!-- index.html (MERGED: Schedule + Homework + Daily Updates) -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spring 2026 Schedule - Reyajul Hasan Leon</title>
-    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #1a3a52;
-            --secondary: #8b4513;
-            --accent: #2a5934;
-            --ta-color: #5c4a72;
-            --office-color: #b85c38;
-            --research-color: #d4af37;
-            --bg-light: #faf8f5;
-            --bg-card: #ffffff;
-            --text-dark: #2c2c2c;
-            --text-light: #6b6b6b;
-            --border: #e5e0d8;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-
-        body {
-            font-family: 'DM Sans', sans-serif;
-            background: linear-gradient(135deg, var(--bg-light) 0%, #f0ece6 100%);
-            color: var(--text-dark);
-            line-height: 1.6;
-            min-height: 100vh;
-        }
-
-        .header {
-            background: var(--primary);
-            color: white;
-            padding: 3rem 2rem 2rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .header::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -10%;
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-            border-radius: 50%;
-        }
-
-        .header-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
-
-        h1 {
-            font-family: 'Crimson Pro', serif;
-            font-size: 3rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            letter-spacing: -0.02em;
-        }
-
-        .subtitle {
-            font-size: 1.1rem;
-            opacity: 0.9;
-            font-weight: 400;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-
-        .controls {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-        }
-
-        .filter-btn {
-            padding: 0.75rem 1.5rem;
-            border: 2px solid var(--border);
-            background: var(--bg-card);
-            color: var(--text-dark);
-            border-radius: 12px;
-            cursor: pointer;
-            font-family: 'DM Sans', sans-serif;
-            font-weight: 500;
-            font-size: 0.95rem;
-            transition: all 0.3s ease;
-            position: relative;
-            -webkit-tap-highlight-color: transparent;
-            user-select: none;
-        }
-
-        .filter-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-
-        .filter-btn.active {
-            border-color: var(--primary);
-            background: var(--primary);
-            color: white;
-        }
-
-        .filter-btn.active::before {
-            content: '✓';
-            margin-right: 0.5rem;
-        }
-
-        .schedule-grid {
-            display: grid;
-            grid-template-columns: 80px repeat(5, 1fr);
-            gap: 1px;
-            background: var(--border);
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-        }
-
-        .day-header, .time-cell, .event-cell {
-            background: var(--bg-card);
-            padding: 1rem;
-        }
-
-        .day-header {
-            font-family: 'Crimson Pro', serif;
-            font-weight: 600;
-            font-size: 1.1rem;
-            text-align: center;
-            padding: 1.5rem 1rem;
-            background: linear-gradient(135deg, var(--primary) 0%, #2a4a62 100%);
-            color: white;
-        }
-
-        .time-cell {
-            font-size: 0.85rem;
-            color: var(--text-light);
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--bg-light);
-        }
-
-        .event-cell {
-            min-height: 80px;
-            position: relative;
-        }
-
-        .event {
-            background: var(--primary);
-            color: white;
-            padding: 0.75rem;
-            border-radius: 10px;
-            margin-bottom: 0.5rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border-left: 4px solid rgba(255,255,255,0.3);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            animation: fadeIn 0.5s ease;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .event:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(0,0,0,0.15);
-        }
-
-        .event:active {
-            transform: translateY(0);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-
-        @media (hover: none) and (pointer: coarse) {
-            .event:hover {
-                transform: none;
-            }
-            
-            .event:active {
-                transform: scale(0.98);
-                opacity: 0.9;
-            }
-        }
-
-        .event.course {
-            background: linear-gradient(135deg, var(--primary) 0%, #2a4a62 100%);
-        }
-
-        .event.ta {
-            background: linear-gradient(135deg, var(--ta-color) 0%, #6d5a82 100%);
-        }
-
-        .event.office {
-            background: linear-gradient(135deg, var(--office-color) 0%, #c86d48 100%);
-        }
-
-        .event.proctor {
-            background: linear-gradient(135deg, var(--accent) 0%, #3a6944 100%);
-        }
-
-        .event.research {
-            background: 
-                repeating-linear-gradient(
-                    45deg,
-                    #f4e8c1,
-                    #f4e8c1 10px,
-                    #e8d7a8 10px,
-                    #e8d7a8 20px
-                );
-            color: var(--text-dark);
-            border-left: 4px solid var(--research-color);
-            border-style: dashed;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .event.research::before {
-            content: '📚';
-            position: absolute;
-            right: 8px;
-            top: 8px;
-            font-size: 1.2rem;
-            opacity: 0.4;
-        }
-
-        .event.research:hover::before {
-            opacity: 0.8;
-            transform: scale(1.2);
-            transition: all 0.3s ease;
-        }
-
-        .event.research .event-title {
-            color: #8b7355;
-        }
-
-        .event.research .event-details {
-            color: #6b5d4f;
-        }
-
-        .event-title {
-            font-weight: 700;
-            font-size: 0.95rem;
-            margin-bottom: 0.25rem;
-            letter-spacing: 0.02em;
-        }
-
-        .event-subtitle {
-            font-weight: 600;
-            font-size: 0.85rem;
-            opacity: 0.95;
-            margin-bottom: 0.25rem;
-            font-style: italic;
-        }
-
-        .event-details {
-            font-size: 0.8rem;
-            opacity: 0.9;
-            line-height: 1.4;
-        }
-
-        .event-time {
-            font-weight: 500;
-            margin-bottom: 0.15rem;
-        }
-
-        .legend {
-            display: flex;
-            gap: 2rem;
-            justify-content: center;
-            margin-top: 2rem;
-            flex-wrap: wrap;
-            padding: 2rem;
-            background: var(--bg-card);
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .legend-color {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-
-        .legend-color.course {
-            background: linear-gradient(135deg, var(--primary) 0%, #2a4a62 100%);
-        }
-
-        .legend-color.ta {
-            background: linear-gradient(135deg, var(--ta-color) 0%, #6d5a82 100%);
-        }
-
-        .legend-color.office {
-            background: linear-gradient(135deg, var(--office-color) 0%, #c86d48 100%);
-        }
-
-        .legend-color.proctor {
-            background: linear-gradient(135deg, var(--accent) 0%, #3a6944 100%);
-        }
-
-        .legend-color.research {
-            background: 
-                repeating-linear-gradient(
-                    45deg,
-                    #f4e8c1,
-                    #f4e8c1 10px,
-                    #e8d7a8 10px,
-                    #e8d7a8 20px
-                );
-            border: 2px dashed var(--research-color);
-        }
-
-        .legend-label {
-            font-weight: 600;
-            color: var(--text-dark);
-        }
-
-        .empty-cell {
-            background: transparent;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(5px);
-            z-index: 1000;
-            animation: modalFade 0.3s ease;
-        }
-
-        @keyframes modalFade {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .modal-content {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: var(--bg-card);
-            padding: 2.5rem;
-            border-radius: 20px;
-            max-width: 500px;
-            width: 90%;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            animation: modalSlide 0.3s ease;
-        }
-
-        @keyframes modalSlide {
-            from {
-                transform: translate(-50%, -40%);
-                opacity: 0;
-            }
-            to {
-                transform: translate(-50%, -50%);
-                opacity: 1;
-            }
-        }
-
-        .modal-header {
-            font-family: 'Crimson Pro', serif;
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            color: var(--primary);
-        }
-
-        .modal-section {
-            margin-bottom: 1rem;
-        }
-
-        .modal-label {
-            font-weight: 600;
-            color: var(--text-light);
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 0.25rem;
-        }
-
-        .modal-value {
-            font-size: 1.05rem;
-            color: var(--text-dark);
-            margin-bottom: 0.5rem;
-        }
-
-        .close-modal {
-            position: absolute;
-            top: 1.5rem;
-            right: 1.5rem;
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--text-light);
-            transition: all 0.3s ease;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .close-modal:hover {
-            background: var(--bg-light);
-            color: var(--text-dark);
-            transform: rotate(90deg);
-        }
-
-        @media (max-width: 1024px) {
-            .schedule-grid {
-                grid-template-columns: 70px 1fr;
-            }
-
-            h1 {
-                font-size: 2rem;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .header {
-                padding: 2rem 1rem 1.5rem;
-            }
-
-            h1 {
-                font-size: 1.8rem;
-            }
-
-            .subtitle {
-                font-size: 0.95rem;
-            }
-
-            .container {
-                padding: 1rem;
-            }
-
-            .stats {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 1rem;
-            }
-
-            .stat-card {
-                padding: 1rem;
-            }
-
-            .stat-value {
-                font-size: 2rem;
-            }
-
-            .controls {
-                gap: 0.75rem;
-            }
-
-            .filter-btn {
-                padding: 0.6rem 1rem;
-                font-size: 0.85rem;
-            }
-
-            .schedule-grid {
-                display: block;
-                gap: 0;
-            }
-
-            .time-cell {
-                display: none;
-            }
-
-            .day-section {
-                background: var(--bg-card);
-                margin-bottom: 1rem;
-                border-radius: 12px;
-                overflow: hidden;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            }
-
-            .day-header {
-                padding: 1rem;
-                text-align: left;
-                position: sticky;
-                top: 0;
-                z-index: 10;
-            }
-
-            .event-cell {
-                padding: 0.5rem;
-                min-height: auto;
-            }
-
-            .event {
-                margin-bottom: 0.75rem;
-            }
-
-            .event-title {
-                font-size: 0.9rem;
-            }
-
-            .event-details {
-                font-size: 0.75rem;
-            }
-
-            .legend {
-                flex-direction: column;
-                gap: 1rem;
-                padding: 1.5rem;
-            }
-
-            .legend-item {
-                gap: 0.5rem;
-            }
-
-            .legend-color {
-                width: 35px;
-                height: 35px;
-            }
-
-            .modal-content {
-                width: 95%;
-                padding: 2rem 1.5rem;
-            }
-
-            .modal-header {
-                font-size: 1.5rem;
-                padding-right: 2rem;
-            }
-        }
-
-        /* Mobile-specific day grouping */
-        @media (max-width: 768px) {
-            .mobile-day-group {
-                background: var(--bg-card);
-                margin-bottom: 1rem;
-                border-radius: 12px;
-                overflow: hidden;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-                animation: fadeIn 0.5s ease;
-            }
-
-            .mobile-day-header {
-                background: linear-gradient(135deg, var(--primary) 0%, #2a4a62 100%);
-                color: white;
-                padding: 1rem 1.25rem;
-                font-family: 'Crimson Pro', serif;
-                font-size: 1.2rem;
-                font-weight: 600;
-                position: sticky;
-                top: 0;
-                z-index: 10;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-            }
-
-            .mobile-day-count {
-                background: rgba(255,255,255,0.2);
-                padding: 0.25rem 0.75rem;
-                border-radius: 20px;
-                font-size: 0.85rem;
-                font-weight: 500;
-            }
-
-            .mobile-events {
-                padding: 0.75rem;
-            }
-
-            .mobile-event-wrapper {
-                margin-bottom: 0.75rem;
-            }
-
-            .mobile-event-wrapper:last-child {
-                margin-bottom: 0;
-            }
-        }
-
-        /* Extra small phones */
-        @media (max-width: 480px) {
-            h1 {
-                font-size: 1.5rem;
-            }
-
-            .subtitle {
-                font-size: 0.85rem;
-                line-height: 1.4;
-            }
-
-            .header {
-                padding: 1.5rem 1rem;
-            }
-
-            .stats {
-                grid-template-columns: 1fr;
-            }
-
-            .filter-btn {
-                padding: 0.5rem 0.85rem;
-                font-size: 0.8rem;
-                flex: 1;
-                min-width: 0;
-            }
-
-            .controls {
-                display: grid;
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .event-title {
-                font-size: 0.85rem;
-            }
-
-            .event-details {
-                font-size: 0.7rem;
-            }
-
-            .modal-content {
-                padding: 1.5rem 1rem;
-            }
-
-            .modal-header {
-                font-size: 1.3rem;
-            }
-
-            .legend-label {
-                font-size: 0.9rem;
-            }
-        }
-
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .stat-card {
-            background: var(--bg-card);
-            padding: 1.5rem;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-            border-left: 4px solid var(--primary);
-            transition: all 0.3s ease;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
-        }
-
-        .stat-value {
-            font-family: 'Crimson Pro', serif;
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--primary);
-            line-height: 1;
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-label {
-            font-size: 0.9rem;
-            color: var(--text-light);
-            font-weight: 500;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leon's Academic Hub - Spring 2026</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #1a3a52;
+      --secondary: #8b4513;
+      --accent: #2a5934;
+
+      --ta-color: #5c4a72;
+      --office-color: #b85c38;
+      --research-color: #d4af37;
+
+      --homework-color: #c75b7a;
+      --progress-color: #4a90a4;
+
+      --bg-light: #faf8f5;
+      --bg-card: #ffffff;
+
+      --text-dark: #2c2c2c;
+      --text-light: #6b6b6b;
+      --border: #e5e0d8;
+
+      --success: #4caf50;
+      --warning: #ff9800;
+      --danger: #f44336;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      font-family: "DM Sans", sans-serif;
+      background: linear-gradient(135deg, var(--bg-light) 0%, #f0ece6 100%);
+      color: var(--text-dark);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* =========================
+       NAV
+    ========================== */
+    .nav-bar {
+      background: var(--primary);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 2rem;
+      position: relative;
+    }
+
+    .nav-logo {
+      color: white;
+      font-family: "Crimson Pro", serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      padding: 1rem 0;
+    }
+
+    .nav-menu {
+      display: flex;
+      gap: 0.5rem;
+      list-style: none;
+    }
+
+    .nav-link {
+      color: white;
+      text-decoration: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      font-weight: 500;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .nav-link:hover { background: rgba(255,255,255,0.1); }
+    .nav-link.active { background: rgba(255,255,255,0.2); }
+
+    .mobile-menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 0.5rem;
+    }
+
+    /* =========================
+       HEADER + LAYOUT
+    ========================== */
+    .header {
+      background: var(--primary);
+      color: white;
+      padding: 3rem 2rem 2rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      right: -10%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .header-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    h1 {
+      font-family: "Crimson Pro", serif;
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.02em;
+    }
+
+    .subtitle {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      font-weight: 400;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    /* Pages (SPA) */
+    .page { display: none; animation: fadeIn 0.3s ease; }
+    .page.active { display: block; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* =========================
+       HOMEWORK
+    ========================== */
+    .add-homework-btn {
+      background: linear-gradient(135deg, var(--homework-color) 0%, #d76b8a 100%);
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(199, 91, 122, 0.3);
+      margin-bottom: 2rem;
+    }
+
+    .add-homework-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(199, 91, 122, 0.4);
+    }
+
+    .homework-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .homework-card {
+      background: var(--bg-card);
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      transition: all 0.3s ease;
+      border-left: 4px solid var(--homework-color);
+    }
+
+    .homework-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+    }
+
+    .homework-card.completed {
+      opacity: 0.7;
+      border-left-color: var(--success);
+    }
+
+    .homework-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      margin-bottom: 1rem;
+      gap: 1rem;
+    }
+
+    .homework-title {
+      font-family: "Crimson Pro", serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .homework-course {
+      font-size: 0.9rem;
+      color: var(--text-light);
+      margin-bottom: 0.5rem;
+    }
+
+    .homework-due {
+      font-size: 0.95rem;
+      color: var(--text-dark);
+      margin-bottom: 1rem;
+    }
+
+    .homework-due.urgent {
+      color: var(--danger);
+      font-weight: 700;
+    }
+
+    .homework-due.warning {
+      color: var(--warning);
+      font-weight: 700;
+    }
+
+    .homework-notes {
+      font-size: 0.95rem;
+      color: var(--text-dark);
+      line-height: 1.6;
+      margin-bottom: 1rem;
+      white-space: pre-wrap;
+    }
+
+    .homework-actions {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .homework-btn {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .complete-btn { background: var(--success); color: white; }
+    .edit-btn     { background: var(--warning); color: white; }
+    .delete-btn   { background: var(--danger); color: white; }
+
+    /* =========================
+       DAILY UPDATES (PROJECTS)
+    ========================== */
+    .add-project-btn {
+      background: linear-gradient(135deg, var(--progress-color) 0%, #5aa4b4 100%);
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(74, 144, 164, 0.3);
+      margin-bottom: 2rem;
+    }
+
+    .add-project-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(74, 144, 164, 0.4);
+    }
+
+    .projects-grid { display: grid; gap: 2rem; }
+
+    .project-card {
+      background: var(--bg-card);
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+
+    .project-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      margin-bottom: 1.5rem;
+      gap: 1rem;
+    }
+
+    .project-title {
+      font-family: "Crimson Pro", serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .project-progress { margin-bottom: 1.5rem; }
+
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 20px;
+      background: var(--bg-light);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--progress-color) 0%, #5aa4b4 100%);
+      transition: width 0.5s ease;
+      border-radius: 10px;
+    }
+
+    .project-notes {
+      font-size: 0.95rem;
+      color: var(--text-dark);
+      line-height: 1.6;
+      margin-bottom: 1rem;
+      white-space: pre-wrap;
+    }
+
+    /* =========================
+       EMPTY STATE
+    ========================== */
+    .empty-state {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: var(--text-light);
+    }
+
+    .empty-state-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      opacity: 0.5;
+    }
+
+    .empty-state-text { font-size: 1.2rem; }
+
+    /* =========================
+       MODALS (shared)
+    ========================== */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(5px);
+      z-index: 1000;
+      animation: modalFade 0.3s ease;
+    }
+
+    .modal.active {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    @keyframes modalFade { from {opacity:0;} to {opacity:1;} }
+
+    .modal-content {
+      background: var(--bg-card);
+      padding: 2.5rem;
+      border-radius: 20px;
+      max-width: 520px;
+      width: 92%;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      animation: modalSlide 0.3s ease;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+    }
+
+    @keyframes modalSlide {
+      from { transform: translateY(-20px); opacity: 0; }
+      to   { transform: translateY(0); opacity: 1; }
+    }
+
+    .modal-header {
+      font-family: "Crimson Pro", serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      color: var(--primary);
+    }
+
+    .modal-section { margin-bottom: 1rem; }
+    .modal-label {
+      font-weight: 700;
+      color: var(--text-light);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.25rem;
+    }
+    .modal-value {
+      font-size: 1.05rem;
+      color: var(--text-dark);
+      margin-bottom: 0.25rem;
+      white-space: pre-wrap;
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 1.25rem;
+      right: 1.25rem;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--text-light);
+      transition: all 0.3s ease;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .close-modal:hover {
+      background: var(--bg-light);
+      color: var(--text-dark);
+      transform: rotate(90deg);
+    }
+
+    /* Forms inside modals */
+    .form-group { margin-bottom: 1.5rem; }
+    .form-label {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: var(--text-dark);
+    }
+
+    .form-input, .form-select, .form-textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      font-family: "DM Sans", sans-serif;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background: white;
+    }
+
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .form-textarea { resize: vertical; min-height: 100px; }
+
+    .form-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: flex-end;
+      margin-top: 2rem;
+    }
+
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary   { background: var(--primary); color: white; }
+    .btn-secondary { background: var(--border); color: var(--text-dark); }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    /* =========================
+       SCHEDULE (from old index.html)
+    ========================== */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: var(--bg-card);
+      padding: 1.5rem;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      border-left: 4px solid var(--primary);
+      transition: all 0.3s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+    }
+
+    .stat-value {
+      font-family: "Crimson Pro", serif;
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+      font-size: 0.9rem;
+      color: var(--text-light);
+      font-weight: 600;
+    }
+
+    .controls {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      padding: 0.75rem 1.5rem;
+      border: 2px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text-dark);
+      border-radius: 12px;
+      cursor: pointer;
+      font-family: "DM Sans", sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+      position: relative;
+      user-select: none;
+    }
+
+    .filter-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .filter-btn.active {
+      border-color: var(--primary);
+      background: var(--primary);
+      color: white;
+    }
+
+    .filter-btn.active::before {
+      content: "✓";
+      margin-right: 0.5rem;
+    }
+
+    .schedule-grid-wrap {
+      width: 100%;
+      overflow-x: auto;
+      padding-bottom: 0.25rem;
+    }
+
+    .schedule-grid {
+      display: grid;
+      grid-template-columns: 80px repeat(5, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+      min-width: 980px; /* makes mobile scroll usable without needing JS */
+    }
+
+    .day-header, .time-cell, .event-cell {
+      background: var(--bg-card);
+      padding: 1rem;
+    }
+
+    .day-header {
+      font-family: "Crimson Pro", serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      text-align: center;
+      padding: 1.5rem 1rem;
+      background: linear-gradient(135deg, var(--primary) 0%, #2a4a62 100%);
+      color: white;
+    }
+
+    .time-cell {
+      font-size: 0.85rem;
+      color: var(--text-light);
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-light);
+    }
+
+    .event-cell { min-height: 80px; position: relative; }
+
+    .event {
+      background: var(--primary);
+      color: white;
+      padding: 0.75rem;
+      border-radius: 10px;
+      margin-bottom: 0.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border-left: 4px solid rgba(255,255,255,0.3);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .event:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+    }
+
+    .event.course { background: linear-gradient(135deg, var(--primary) 0%, #2a4a62 100%); }
+    .event.ta     { background: linear-gradient(135deg, var(--ta-color) 0%, #6d5a82 100%); }
+    .event.office { background: linear-gradient(135deg, var(--office-color) 0%, #c86d48 100%); }
+    .event.proctor{ background: linear-gradient(135deg, var(--accent) 0%, #3a6944 100%); }
+
+    .event.research {
+      background:
+        repeating-linear-gradient(
+          45deg,
+          #f4e8c1,
+          #f4e8c1 10px,
+          #e8d7a8 10px,
+          #e8d7a8 20px
+        );
+      color: var(--text-dark);
+      border-left: 4px solid var(--research-color);
+      border-style: dashed;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .event.research::before {
+      content: "📚";
+      position: absolute;
+      right: 8px;
+      top: 8px;
+      font-size: 1.2rem;
+      opacity: 0.4;
+    }
+
+    .event-title {
+      font-weight: 800;
+      font-size: 0.95rem;
+      margin-bottom: 0.25rem;
+      letter-spacing: 0.02em;
+    }
+
+    .event-subtitle {
+      font-weight: 700;
+      font-size: 0.85rem;
+      opacity: 0.95;
+      margin-bottom: 0.25rem;
+      font-style: italic;
+    }
+
+    .event-details {
+      font-size: 0.8rem;
+      opacity: 0.95;
+      line-height: 1.4;
+    }
+
+    .event-time { font-weight: 700; margin-bottom: 0.15rem; }
+
+    .legend {
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+      padding: 2rem;
+      background: var(--bg-card);
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .legend-color {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .legend-color.course  { background: linear-gradient(135deg, var(--primary) 0%, #2a4a62 100%); }
+    .legend-color.ta      { background: linear-gradient(135deg, var(--ta-color) 0%, #6d5a82 100%); }
+    .legend-color.office  { background: linear-gradient(135deg, var(--office-color) 0%, #c86d48 100%); }
+    .legend-color.proctor { background: linear-gradient(135deg, var(--accent) 0%, #3a6944 100%); }
+    .legend-color.research{
+      background:
+        repeating-linear-gradient(
+          45deg,
+          #f4e8c1,
+          #f4e8c1 10px,
+          #e8d7a8 10px,
+          #e8d7a8 20px
+        );
+      border: 2px dashed var(--research-color);
+    }
+
+    .legend-label { font-weight: 800; color: var(--text-dark); }
+
+    /* =========================
+       MOBILE
+    ========================== */
+    @media (max-width: 768px) {
+      .mobile-menu-toggle { display: block; }
+
+      .nav-menu {
+        position: absolute;
+        top: 100%;
+        left: 0; right: 0;
+        background: var(--primary);
+        flex-direction: column;
+        gap: 0;
+        padding: 1rem;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        display: none;
+      }
+
+      .nav-menu.active { display: flex; }
+      .nav-link { padding: 1rem; text-align: center; }
+      .nav-container { padding: 0 1rem; }
+
+      h1 { font-size: 2rem; }
+      .subtitle { font-size: 0.95rem; }
+      .header { padding: 2rem 1rem 1.5rem; }
+      .container { padding: 1rem; }
+
+      .homework-grid { grid-template-columns: 1fr; }
+      .modal-content { padding: 2rem 1.5rem; }
+
+      /* schedule on mobile: horizontal scroll */
+      .schedule-grid { min-width: 980px; }
+      .legend { padding: 1.5rem; gap: 1rem; }
+      .legend-color { width: 35px; height: 35px; }
+      .filter-btn { padding: 0.6rem 1rem; font-size: 0.85rem; }
+    }
+
+    @media (max-width: 480px) {
+      h1 { font-size: 1.6rem; }
+      .nav-logo { font-size: 1.2rem; }
+
+      .controls {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+      }
+
+      .filter-btn { padding: 0.55rem 0.8rem; font-size: 0.8rem; }
+    }
+  </style>
 </head>
+
 <body>
+  <!-- NAV -->
+  <nav class="nav-bar">
+    <div class="nav-container">
+      <div class="nav-logo">Leon's Academic Hub</div>
+      <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+      <ul class="nav-menu" id="navMenu">
+        <li><a class="nav-link active" onclick="showPage('schedule', this)">Schedule</a></li>
+        <li><a class="nav-link" onclick="showPage('homework', this)">Homework</a></li>
+        <li><a class="nav-link" onclick="showPage('daily-updates', this)">Daily Updates</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- =========================
+       SCHEDULE PAGE
+  ========================== -->
+  <div id="schedule-page" class="page active">
     <div class="header">
-        <div class="header-content">
-            <h1>Spring 2026 Schedule</h1>
-            <p class="subtitle">Reyajul Hasan Leon • PhD Student, Financial Mathematics • Florida State University</p>
-        </div>
+      <div class="header-content">
+        <h1>Spring 2026 Schedule</h1>
+        <p class="subtitle">Reyajul Hasan Leon • PhD Student, Financial Mathematics • Florida State University</p>
+      </div>
     </div>
 
     <div class="container">
-        <div class="stats">
-            <div class="stat-card">
-                <div class="stat-value">5</div>
-                <div class="stat-label">Courses</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value">4</div>
-                <div class="stat-label">TA Duties</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value">6</div>
-                <div class="stat-label">Office Hours/Week</div>
-            </div>
-            <div class="stat-card" style="border-left-color: var(--research-color);">
-                <div class="stat-value" style="color: #8b7355;">35+</div>
-                <div class="stat-label">Research Hours/Week</div>
-            </div>
+      <div class="stats">
+        <div class="stat-card">
+          <div class="stat-value">5</div>
+          <div class="stat-label">Courses</div>
         </div>
-
-        <div class="controls">
-            <button class="filter-btn active" data-filter="all">All Activities</button>
-            <button class="filter-btn" data-filter="course">Courses Only</button>
-            <button class="filter-btn" data-filter="ta">TA Duties</button>
-            <button class="filter-btn" data-filter="office">Office Hours</button>
-            <button class="filter-btn" data-filter="research">Research & Study</button>
+        <div class="stat-card">
+          <div class="stat-value">4</div>
+          <div class="stat-label">TA Duties</div>
         </div>
-
-        <div class="schedule-grid">
-            <div class="time-cell"></div>
-            <div class="day-header">Monday</div>
-            <div class="day-header">Tuesday</div>
-            <div class="day-header">Wednesday</div>
-            <div class="day-header">Thursday</div>
-            <div class="day-header">Friday</div>
-
-            <!-- 8:00 AM -->
-            <div class="time-cell">8:00 AM</div>
-            <div class="event-cell">
-                <div class="event course" data-type="course" data-info='{"title":"ECO5428-01","courseName":"Time Series Analysis","time":"8:00 AM - 9:15 AM","location":"BEL 0204","type":"Course","days":"MW"}'>
-                    <div class="event-title">ECO5428-01</div>
-                    <div class="event-subtitle">Time Series Analysis</div>
-                    <div class="event-details">
-                        <div class="event-time">8:00 AM - 9:15 AM</div>
-                        <div>BEL 0204</div>
-                    </div>
-                </div>
-            </div>
-            <div class="event-cell">
-                <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"8:00 AM - 9:15 AM","type":"Research"}'>
-                    <div class="event-title">Research & Study</div>
-                    <div class="event-details">
-                        <div class="event-time">8:00 AM - 9:15 AM</div>
-                    </div>
-                </div>
-            </div>
-            <div class="event-cell">
-                <div class="event course" data-type="course" data-info='{"title":"ECO5428-01","courseName":"Time Series Analysis","time":"8:00 AM - 9:15 AM","location":"BEL 0204","type":"Course","days":"MW"}'>
-                    <div class="event-title">ECO5428-01</div>
-                    <div class="event-subtitle">Time Series Analysis</div>
-                    <div class="event-details">
-                        <div class="event-time">8:00 AM - 9:15 AM</div>
-                        <div>BEL 0204</div>
-                    </div>
-                </div>
-            </div>
-            <div class="event-cell">
-                <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"8:00 AM - 9:15 AM","type":"Research"}'>
-                    <div class="event-title">Research & Study</div>
-                    <div class="event-details">
-                        <div class="event-time">8:00 AM - 9:15 AM</div>
-                    </div>
-                </div>
-            </div>
-            <div class="event-cell">
-                <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"8:00 AM - 9:15 AM","type":"Research"}'>
-                    <div class="event-title">Research & Study</div>
-                    <div class="event-details">
-                        <div class="event-time">8:00 AM - 9:15 AM</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 9:20 AM -->
-            <div class="time-cell">9:20 AM</div>
-            <div class="event-cell">
-                <div class="event course" data-type="course" data-info='{"title":"MAP5932-04","courseName":"Stochastic Algorithms in Data Science","time":"9:20 AM - 10:10 AM","location":"HCB 0307","type":"Course","days":"MWF"}'>
-                    <div class="event-title">MAP5932-04</div>
-                    <div class="event-subtitle">Stochastic Algorithms in Data Science</div>
-                    <div class="event-details">
-                        <div class="event-time">9:20 AM - 10:10 AM</div>
-                        <div>HCB 0307</div>
-                    </div>
-                </div>
-            </div>
-            <div class="event-cell">
-                <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"9:20 AM - 10:10 AM","type":"Research"}'>
-                    <div class="event-title">Research & Study</div>
-                    <div class="event-details">
-                        <div class="event-time">9:20 AM - 10:10 AM</div>
-                    </div>
-                </div>
-            </div>
-            <div class="event-cell">
-                <div class="event course" data-type="course" data-info='{"title":"MAP5932-04","courseName":"Stochastic Algorithms in Data Science","time":"9:20 AM - 10:10 AM","location":"HCB 0307","type":"Course","days":"MWF"}'>
-                    <div class="event-title">MAP5932-04</div>
-                    <div class="event-subtitle">Stochastic Algorithms in Data Science</div>
-                    <div class="event-details">
-                        <div class="event-time">9:20 AM - 10:10 AM</div>
-                        <div>HCB 0307</div>
-                    </div>
-                </div>
-            </div>
-            <div class="event-cell">
-                <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"9:20 AM - 10:10 AM","type":"Research"}'>
-                    <div class="event-title">Research & Study</div>
-                    <div class="event-details">
-                        <div class="event-time">9:20 AM - 10:10 AM</div>
-                    </div>
-                </div>
-            </div>
-            <div class="event-cell">
-                <div class="event course" data-type="course" data-info='{"title":"MAP5932-04","courseName":"Stochastic Algorithms in Data Science","time":"9:20 AM - 10:10 AM","location":"HCB 0307","type":"Course","days":"MWF"}'>
-                    <div class="event-title">MAP5932-04</div>
-                    <div class="event-subtitle">Stochastic Algorithms in Data Science</div>
-                    <div class="event-details">
-                        <div class="event-time">9:20 AM - 10:10 AM</div>
-                        <div>HCB 0307</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 9:45 AM -->
-            <div class="time-cell">9:45 AM</div>
-            <div class="event-cell">
-                <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"9:45 AM - 11:00 AM","type":"Research"}'>
-                    <div class="event-title">Research & Study</div>
-                    <div class="event-details">
-                        <div class="event-time">9:45 AM - 11:00 AM</div>
-                    </div>
-                </div>
-            </div>
-            <div class="event-cell">
-                <div class="event course" data-type="course" data-info='{"title":"MAP5932-03","courseName":"Stochastic Analysis","time":"9:45 AM - 11:00 AM","location":"LOV 0232","type":"Course","days":"TR"}'>
-                    <div class="event-title">MAP5932-03</div>
-                    <div class="event-subtitle">Stochastic Analysis</div>
-                    <div class="event-details">
-                        <div class="event-time">9:45 AM - 11:00 AM</div>
-                        <div>LOV 0232</div>
-                    </div>
-                </div>
-            </div>
-            <div class="event-cell">
-                <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"9:45 AM - 11:00 AM","type":"Research"}'>
-                    <div class="event-title">Research & Study</div>
-                    <div class="event-details">
-                        <div class="event-time">9:45 AM - 11:00 AM</div>
-                    </div>
-                </div>
-            </div>
-            <div class="event-cell">
-                <div class="event course" data-type="course" data-info='{"title":"MAP5932-03","courseName":"Stochastic Analysis","time":"9:45 AM - 11:00 AM","location":"LOV 0232","type":"Course","days":"TR"}'>
-                    <div class="event-title">MAP5932-03</div>
-                    <div class="event-subtitle">Stochastic Analysis</div>
-                    <div class="event-details">
-                        <div class="event-time">9:45 AM - 11:00 AM</div>
-                        <div>LOV 0232</div>
-                    </div>
-                </div>
-            </div>
-            <div class="event-cell">
-                <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"9:45 AM - 11:00 AM","type":"Research"}'>
-                    <div class="event-title">Research & Study</div>
-                    <div class="event-details">
-                        <div class="event-time">9:45 AM - 11:00 AM</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 10:40 AM -->
-            <div class="time-cell">10:40 AM</div>
-            <div class="event-cell">
-                <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"10:40 AM - 11:30 AM","type":"Research"}'>
-                    <div class="event-title">Research & Study</div>
-                    <div class="event-details">
-                        <div class="event-time">10:40 AM - 11:30 AM</div>
-                    </div>
-                </div>
-            </div>
-            <div class="event-cell">
-                <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"10:40 AM - 11:30 AM","type":"Research"}'>
-                    <div class="event-title">Research & Study</div>
-                    <div class="event-details">
-                        <div class="event-time">10:40 AM - 11:30 AM</div>
-                    </div>
-                </div>
-            </div>
-            <div class="event-cell">
-                <div class="event proctor" data-type="proctor" data-info='{"title":"MAC1105 Proctor","time":"10:40 AM - 11:30 AM","location":"1050 EOA","type":"Proctor","instructor":"Hollingsworth"}'>
-                    <div class="event-title">MAC1105 Proctor</div>
-                    <div class="event-details">
-                        <div class="event-time">10:40 AM - 11:30 AM</div>
-                        <div>1050 EOA</div>
-                    </div>
-                </div>
-            </div>
-            <div class="event-cell">
-                <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"10:40 AM - 11:30 AM","type":"Research"}'>
-                    <div class="event-title">Research & Study</div>
-                    <div class="event-details">
-                        <div class="event-time">10:40 AM - 11:30 AM</div>
-                    </div>
-                </div>
-            </div>
-            <div class="event-cell">
-                <div class="event proctor" data-type="proctor" data-info='{"title":"MAC1105 Proctor","time":"10:40 AM - 11:30 AM","location":"1050 EOA","type":"Proctor","instructor":"Hollingsworth"}'>
-                    <div class="event-title">MAC1105 Proctor</div>
-                    <div class="event-details">
-                        <div class="event-time">10:40 AM - 11:30 AM</div>
-                        <div>1050 EOA</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 11:35 AM -->
-            <div class="time-cell">11:35 AM</div>
-            <div class="event-cell">
-                <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"11:35 AM - 12:50 PM","type":"Research"}'>
-                    <div class="event-title">Research & Study</div>
-                    <div class="event-details">
-                        <div class="event-time">11:35 AM - 12:50 PM</div>
-                    </div>
-                </div>
-            </div>
-            <div class="event-cell">
-                <div class="event ta" data-type="ta" data-info='{"title":"MAS3105 TA Office Hours","time":"11:35 AM - 12:50 PM","location":"HCB 0316","type":"TA","instructor":"Dr. Ballas"}'>
-                    <div class="event-title">MAS3105 TA</div>
-                    <div class="event-details">
-                        <div class="event-time">11:35 AM - 12:50 PM</div>
-                        <div>HCB 0316 • Office Hours</div>
-                    </div>
-                </div>
-            </div>
-            <div class="event-cell">
-                <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"11:35 AM - 12:50 PM","type":"Research"}'>
-                    <div class="event-title">Research & Study</div>
-                    <div class="event-details">
-                        <div class="event-time">11:35 AM - 12:50 PM</div>
-                    </div>
-                </div>
-            </div>
-            <div class="event-cell">
-                <div class="event ta" data-type="ta" data-info='{"title":"MAS3105 TA Office Hours","time":"11:35 AM - 12:50 PM","location":"HCB 0316","type":"TA","instructor":"Dr. Ballas"}'>
-                    <div class="event-title">MAS3105 TA</div>
-                    <div class="event-details">
-                        <div class="event-time">11:35 AM - 12:50 PM</div>
-                        <div>HCB 0316 • Office Hours</div>
-                    </div>
-                </div>
-            </div>
-            <div class="event-cell">
-                <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"11:35 AM - 12:50 PM","type":"Research"}'>
-                    <div class="event-title">Research & Study</div>
-                    <div class="event-details">
-                        <div class="event-time">11:35 AM - 12:50 PM</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 12:00 PM -->
-            <div class="time-cell">12:00 PM</div>
-            <div class="event-cell">
-                <div class="event ta" data-type="ta" data-info='{"title":"MAS3105 TA Office Hours","time":"12:00 PM - 12:50 PM","location":"HCB 0316","type":"TA","instructor":"Dr. Ballas"}'>
-                    <div class="event-title">MAS3105 TA</div>
-                    <div class="event-details">
-                        <div class="event-time">12:00 PM - 12:50 PM</div>
-                        <div>HCB 0316 • Office Hours</div>
-                    </div>
-                </div>
-            </div>
-            <div class="event-cell">
-                <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"12:00 PM - 12:50 PM","type":"Research"}'>
-                    <div class="event-title">Research & Study</div>
-                    <div class="event-details">
-                        <div class="event-time">12:00 PM - 12:50 PM</div>
-                    </div>
-                </div>
-            </div>
-            <div class="event-cell">
-                <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"12:00 PM - 12:50 PM","type":"Research"}'>
-                    <div class="event-title">Research & Study</div>
-                    <div class="event-details">
-                        <div class="event-time">12:00 PM - 12:50 PM</div>
-                    </div>
-                </div>
-            </div>
-            <div class="event-cell">
-                <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"12:00 PM - 12:50 PM","type":"Research"}'>
-                    <div class="event-title">Research & Study</div>
-                    <div class="event-details">
-                        <div class="event-time">12:00 PM - 12:50 PM</div>
-                    </div>
-                </div>
-            </div>
-            <div class="event-cell">
-                <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"12:00 PM - 12:50 PM","type":"Research"}'>
-                    <div class="event-title">Research & Study</div>
-                    <div class="event-details">
-                        <div class="event-time">12:00 PM - 12:50 PM</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 1:20 PM -->
-            <div class="time-cell">1:20 PM</div>
-            <div class="event-cell">
-                <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"1:20 PM - 2:10 PM","type":"Research"}'>
-                    <div class="event-title">Research & Study</div>
-                    <div class="event-details">
-                        <div class="event-time">1:20 PM - 2:10 PM</div>
-                    </div>
-                </div>
-            </div>
-            <div class="event-cell">
-                <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"1:20 PM - 2:10 PM","type":"Research"}'>
-                    <div class="event-title">Research & Study</div>
-                    <div class="event-details">
-                        <div class="event-time">1:20 PM - 2:10 PM</div>
-                    </div>
-                </div>
-            </div>
-            <div class="event-cell">
-                <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"1:20 PM - 2:10 PM","type":"Research"}'>
-                    <div class="event-title">Research & Study</div>
-                    <div class="event-details">
-                        <div class="event-time">1:20 PM - 2:10 PM</div>
-                    </div>
-                </div>
-            </div>
-            <div class="event-cell">
-                <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"1:20 PM - 2:10 PM","type":"Research"}'>
-                    <div class="event-title">Research & Study</div>
-                    <div class="event-details">
-                        <div class="event-time">1:20 PM - 2:10 PM</div>
-                    </div>
-                </div>
-            </div>
-            <div class="event-cell">
-                <div class="event course" data-type="course" data-info='{"title":"MAP6939-04","courseName":"Data Science and Machine Learning","time":"1:20 PM - 2:10 PM","location":"LOV 0106","type":"Course","days":"F"}'>
-                    <div class="event-title">MAP6939-04</div>
-                    <div class="event-subtitle">Data Science and Machine Learning</div>
-                    <div class="event-details">
-                        <div class="event-time">1:20 PM - 2:10 PM</div>
-                        <div>LOV 0106</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 3:00 PM -->
-            <div class="time-cell">3:00 PM</div>
-            <div class="event-cell">
-                <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"3:00 PM - 4:00 PM","type":"Research"}'>
-                    <div class="event-title">Research & Study</div>
-                    <div class="event-details">
-                        <div class="event-time">3:00 PM - 4:00 PM</div>
-                    </div>
-                </div>
-            </div>
-            <div class="event-cell">
-                <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"3:00 PM - 4:00 PM","type":"Research"}'>
-                    <div class="event-title">Research & Study</div>
-                    <div class="event-details">
-                        <div class="event-time">3:00 PM - 4:00 PM</div>
-                    </div>
-                </div>
-            </div>
-            <div class="event-cell">
-                <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"3:00 PM - 4:00 PM","type":"Research"}'>
-                    <div class="event-title">Research & Study</div>
-                    <div class="event-details">
-                        <div class="event-time">3:00 PM - 4:00 PM</div>
-                    </div>
-                </div>
-            </div>
-            <div class="event-cell">
-                <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"3:00 PM - 4:00 PM","type":"Research"}'>
-                    <div class="event-title">Research & Study</div>
-                    <div class="event-details">
-                        <div class="event-time">3:00 PM - 4:00 PM</div>
-                    </div>
-                </div>
-            </div>
-            <div class="event-cell">
-                <div class="event office" data-type="office" data-info='{"title":"Office Hours","time":"3:00 PM - 4:00 PM","location":"TBD","type":"Office Hours"}'>
-                    <div class="event-title">Office Hours</div>
-                    <div class="event-details">
-                        <div class="event-time">3:00 PM - 4:00 PM</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 4:00 PM -->
-            <div class="time-cell">4:00 PM</div>
-            <div class="event-cell">
-                <div class="event office" data-type="office" data-info='{"title":"Office Hours","time":"4:00 PM - 5:00 PM","location":"TBD","type":"Office Hours"}'>
-                    <div class="event-title">Office Hours</div>
-                    <div class="event-details">
-                        <div class="event-time">4:00 PM - 5:00 PM</div>
-                    </div>
-                </div>
-            </div>
-            <div class="event-cell">
-                <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"4:00 PM - 5:00 PM","type":"Research"}'>
-                    <div class="event-title">Research & Study</div>
-                    <div class="event-details">
-                        <div class="event-time">4:00 PM - 5:00 PM</div>
-                    </div>
-                </div>
-            </div>
-            <div class="event-cell">
-                <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"4:00 PM - 5:00 PM","type":"Research"}'>
-                    <div class="event-title">Research & Study</div>
-                    <div class="event-details">
-                        <div class="event-time">4:00 PM - 5:00 PM</div>
-                    </div>
-                </div>
-            </div>
-            <div class="event-cell">
-                <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"4:00 PM - 5:00 PM","type":"Research"}'>
-                    <div class="event-title">Research & Study</div>
-                    <div class="event-details">
-                        <div class="event-time">4:00 PM - 5:00 PM</div>
-                    </div>
-                </div>
-            </div>
-            <div class="event-cell">
-                <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"4:00 PM - 5:00 PM","type":"Research"}'>
-                    <div class="event-title">Research & Study</div>
-                    <div class="event-details">
-                        <div class="event-time">4:00 PM - 5:00 PM</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 4:50 PM -->
-            <div class="time-cell">4:50 PM</div>
-            <div class="event-cell">
-                <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"4:50 PM - 6:05 PM","type":"Research"}'>
-                    <div class="event-title">Research & Study</div>
-                    <div class="event-details">
-                        <div class="event-time">4:50 PM - 6:05 PM</div>
-                    </div>
-                </div>
-            </div>
-            <div class="event-cell">
-                <div class="event course" data-type="course" data-info='{"title":"MAP5615-01","courseName":"Monte Carlo Fin Math","time":"4:50 PM - 6:05 PM","location":"LOV 0301","type":"Course","days":"TR"}'>
-                    <div class="event-title">MAP5615-01</div>
-                    <div class="event-subtitle">Monte Carlo Fin Math</div>
-                    <div class="event-details">
-                        <div class="event-time">4:50 PM - 6:05 PM</div>
-                        <div>LOV 0301</div>
-                    </div>
-                </div>
-            </div>
-            <div class="event-cell">
-                <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"4:50 PM - 6:05 PM","type":"Research"}'>
-                    <div class="event-title">Research & Study</div>
-                    <div class="event-details">
-                        <div class="event-time">4:50 PM - 6:05 PM</div>
-                    </div>
-                </div>
-            </div>
-            <div class="event-cell">
-                <div class="event course" data-type="course" data-info='{"title":"MAP5615-01","courseName":"Monte Carlo Fin Math","time":"4:50 PM - 6:05 PM","location":"LOV 0301","type":"Course","days":"TR"}'>
-                    <div class="event-title">MAP5615-01</div>
-                    <div class="event-subtitle">Monte Carlo Fin Math</div>
-                    <div class="event-details">
-                        <div class="event-time">4:50 PM - 6:05 PM</div>
-                        <div>LOV 0301</div>
-                    </div>
-                </div>
-            </div>
-            <div class="event-cell">
-                <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"4:50 PM - 6:05 PM","type":"Research"}'>
-                    <div class="event-title">Research & Study</div>
-                    <div class="event-details">
-                        <div class="event-time">4:50 PM - 6:05 PM</div>
-                    </div>
-                </div>
-            </div>
+        <div class="stat-card">
+          <div class="stat-value">6</div>
+          <div class="stat-label">Office Hours/Week</div>
         </div>
-
-        <div class="legend">
-            <div class="legend-item">
-                <div class="legend-color course"></div>
-                <div class="legend-label">Courses</div>
-            </div>
-            <div class="legend-item">
-                <div class="legend-color ta"></div>
-                <div class="legend-label">TA Duties</div>
-            </div>
-            <div class="legend-item">
-                <div class="legend-color office"></div>
-                <div class="legend-label">Office Hours</div>
-            </div>
-            <div class="legend-item">
-                <div class="legend-color proctor"></div>
-                <div class="legend-label">Proctoring</div>
-            </div>
-            <div class="legend-item">
-                <div class="legend-color research"></div>
-                <div class="legend-label">Research & Study</div>
-            </div>
+        <div class="stat-card" style="border-left-color: var(--research-color);">
+          <div class="stat-value" style="color:#8b7355;">35+</div>
+          <div class="stat-label">Research Hours/Week</div>
         </div>
+      </div>
+
+      <div class="controls">
+        <button class="filter-btn active" data-filter="all">All Activities</button>
+        <button class="filter-btn" data-filter="course">Courses Only</button>
+        <button class="filter-btn" data-filter="ta">TA Duties</button>
+        <button class="filter-btn" data-filter="office">Office Hours</button>
+        <button class="filter-btn" data-filter="research">Research & Study</button>
+        <button class="filter-btn" data-filter="proctor">Proctoring</button>
+      </div>
+
+      <div class="schedule-grid-wrap">
+        <div class="schedule-grid" id="scheduleGrid">
+          <div class="time-cell"></div>
+          <div class="day-header">Monday</div>
+          <div class="day-header">Tuesday</div>
+          <div class="day-header">Wednesday</div>
+          <div class="day-header">Thursday</div>
+          <div class="day-header">Friday</div>
+
+          <!-- 8:00 AM -->
+          <div class="time-cell">8:00 AM</div>
+          <div class="event-cell">
+            <div class="event course" data-type="course" data-info='{"title":"ECO5428-01","courseName":"Time Series Analysis","time":"8:00 AM - 9:15 AM","location":"BEL 0204","type":"Course"}'>
+              <div class="event-title">ECO5428-01</div>
+              <div class="event-subtitle">Time Series Analysis</div>
+              <div class="event-details">
+                <div class="event-time">8:00 AM - 9:15 AM</div>
+                <div>BEL 0204</div>
+              </div>
+            </div>
+          </div>
+          <div class="event-cell">
+            <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"8:00 AM - 9:15 AM","type":"Research"}'>
+              <div class="event-title">Research & Study</div>
+              <div class="event-details"><div class="event-time">8:00 AM - 9:15 AM</div></div>
+            </div>
+          </div>
+          <div class="event-cell">
+            <div class="event course" data-type="course" data-info='{"title":"ECO5428-01","courseName":"Time Series Analysis","time":"8:00 AM - 9:15 AM","location":"BEL 0204","type":"Course"}'>
+              <div class="event-title">ECO5428-01</div>
+              <div class="event-subtitle">Time Series Analysis</div>
+              <div class="event-details">
+                <div class="event-time">8:00 AM - 9:15 AM</div>
+                <div>BEL 0204</div>
+              </div>
+            </div>
+          </div>
+          <div class="event-cell">
+            <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"8:00 AM - 9:15 AM","type":"Research"}'>
+              <div class="event-title">Research & Study</div>
+              <div class="event-details"><div class="event-time">8:00 AM - 9:15 AM</div></div>
+            </div>
+          </div>
+          <div class="event-cell">
+            <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"8:00 AM - 9:15 AM","type":"Research"}'>
+              <div class="event-title">Research & Study</div>
+              <div class="event-details"><div class="event-time">8:00 AM - 9:15 AM</div></div>
+            </div>
+          </div>
+
+          <!-- 9:20 AM -->
+          <div class="time-cell">9:20 AM</div>
+          <div class="event-cell">
+            <div class="event course" data-type="course" data-info='{"title":"MAP5932-04","courseName":"Stochastic Algorithms in Data Science","time":"9:20 AM - 10:10 AM","location":"HCB 0307","type":"Course"}'>
+              <div class="event-title">MAP5932-04</div>
+              <div class="event-subtitle">Stochastic Algorithms in Data Science</div>
+              <div class="event-details">
+                <div class="event-time">9:20 AM - 10:10 AM</div>
+                <div>HCB 0307</div>
+              </div>
+            </div>
+          </div>
+          <div class="event-cell">
+            <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"9:20 AM - 10:10 AM","type":"Research"}'>
+              <div class="event-title">Research & Study</div>
+              <div class="event-details"><div class="event-time">9:20 AM - 10:10 AM</div></div>
+            </div>
+          </div>
+          <div class="event-cell">
+            <div class="event course" data-type="course" data-info='{"title":"MAP5932-04","courseName":"Stochastic Algorithms in Data Science","time":"9:20 AM - 10:10 AM","location":"HCB 0307","type":"Course"}'>
+              <div class="event-title">MAP5932-04</div>
+              <div class="event-subtitle">Stochastic Algorithms in Data Science</div>
+              <div class="event-details">
+                <div class="event-time">9:20 AM - 10:10 AM</div>
+                <div>HCB 0307</div>
+              </div>
+            </div>
+          </div>
+          <div class="event-cell">
+            <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"9:20 AM - 10:10 AM","type":"Research"}'>
+              <div class="event-title">Research & Study</div>
+              <div class="event-details"><div class="event-time">9:20 AM - 10:10 AM</div></div>
+            </div>
+          </div>
+          <div class="event-cell">
+            <div class="event course" data-type="course" data-info='{"title":"MAP5932-04","courseName":"Stochastic Algorithms in Data Science","time":"9:20 AM - 10:10 AM","location":"HCB 0307","type":"Course"}'>
+              <div class="event-title">MAP5932-04</div>
+              <div class="event-subtitle">Stochastic Algorithms in Data Science</div>
+              <div class="event-details">
+                <div class="event-time">9:20 AM - 10:10 AM</div>
+                <div>HCB 0307</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 9:45 AM -->
+          <div class="time-cell">9:45 AM</div>
+          <div class="event-cell">
+            <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"9:45 AM - 11:00 AM","type":"Research"}'>
+              <div class="event-title">Research & Study</div>
+              <div class="event-details"><div class="event-time">9:45 AM - 11:00 AM</div></div>
+            </div>
+          </div>
+          <div class="event-cell">
+            <div class="event course" data-type="course" data-info='{"title":"MAP5932-03","courseName":"Stochastic Analysis","time":"9:45 AM - 11:00 AM","location":"LOV 0232","type":"Course"}'>
+              <div class="event-title">MAP5932-03</div>
+              <div class="event-subtitle">Stochastic Analysis</div>
+              <div class="event-details">
+                <div class="event-time">9:45 AM - 11:00 AM</div>
+                <div>LOV 0232</div>
+              </div>
+            </div>
+          </div>
+          <div class="event-cell">
+            <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"9:45 AM - 11:00 AM","type":"Research"}'>
+              <div class="event-title">Research & Study</div>
+              <div class="event-details"><div class="event-time">9:45 AM - 11:00 AM</div></div>
+            </div>
+          </div>
+          <div class="event-cell">
+            <div class="event course" data-type="course" data-info='{"title":"MAP5932-03","courseName":"Stochastic Analysis","time":"9:45 AM - 11:00 AM","location":"LOV 0232","type":"Course"}'>
+              <div class="event-title">MAP5932-03</div>
+              <div class="event-subtitle">Stochastic Analysis</div>
+              <div class="event-details">
+                <div class="event-time">9:45 AM - 11:00 AM</div>
+                <div>LOV 0232</div>
+              </div>
+            </div>
+          </div>
+          <div class="event-cell">
+            <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"9:45 AM - 11:00 AM","type":"Research"}'>
+              <div class="event-title">Research & Study</div>
+              <div class="event-details"><div class="event-time">9:45 AM - 11:00 AM</div></div>
+            </div>
+          </div>
+
+          <!-- 10:40 AM -->
+          <div class="time-cell">10:40 AM</div>
+          <div class="event-cell">
+            <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"10:40 AM - 11:30 AM","type":"Research"}'>
+              <div class="event-title">Research & Study</div>
+              <div class="event-details"><div class="event-time">10:40 AM - 11:30 AM</div></div>
+            </div>
+          </div>
+          <div class="event-cell">
+            <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"10:40 AM - 11:30 AM","type":"Research"}'>
+              <div class="event-title">Research & Study</div>
+              <div class="event-details"><div class="event-time">10:40 AM - 11:30 AM</div></div>
+            </div>
+          </div>
+          <div class="event-cell">
+            <div class="event proctor" data-type="proctor" data-info='{"title":"MAC1105 Proctor","time":"10:40 AM - 11:30 AM","location":"1050 EOA","type":"Proctor","instructor":"Hollingsworth"}'>
+              <div class="event-title">MAC1105 Proctor</div>
+              <div class="event-details">
+                <div class="event-time">10:40 AM - 11:30 AM</div>
+                <div>1050 EOA</div>
+              </div>
+            </div>
+          </div>
+          <div class="event-cell">
+            <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"10:40 AM - 11:30 AM","type":"Research"}'>
+              <div class="event-title">Research & Study</div>
+              <div class="event-details"><div class="event-time">10:40 AM - 11:30 AM</div></div>
+            </div>
+          </div>
+          <div class="event-cell">
+            <div class="event proctor" data-type="proctor" data-info='{"title":"MAC1105 Proctor","time":"10:40 AM - 11:30 AM","location":"1050 EOA","type":"Proctor","instructor":"Hollingsworth"}'>
+              <div class="event-title">MAC1105 Proctor</div>
+              <div class="event-details">
+                <div class="event-time">10:40 AM - 11:30 AM</div>
+                <div>1050 EOA</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 11:35 AM -->
+          <div class="time-cell">11:35 AM</div>
+          <div class="event-cell">
+            <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"11:35 AM - 12:50 PM","type":"Research"}'>
+              <div class="event-title">Research & Study</div>
+              <div class="event-details"><div class="event-time">11:35 AM - 12:50 PM</div></div>
+            </div>
+          </div>
+          <div class="event-cell">
+            <div class="event ta" data-type="ta" data-info='{"title":"MAS3105 TA Office Hours","time":"11:35 AM - 12:50 PM","location":"HCB 0316","type":"TA","instructor":"Dr. Ballas"}'>
+              <div class="event-title">MAS3105 TA</div>
+              <div class="event-details">
+                <div class="event-time">11:35 AM - 12:50 PM</div>
+                <div>HCB 0316 • Office Hours</div>
+              </div>
+            </div>
+          </div>
+          <div class="event-cell">
+            <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"11:35 AM - 12:50 PM","type":"Research"}'>
+              <div class="event-title">Research & Study</div>
+              <div class="event-details"><div class="event-time">11:35 AM - 12:50 PM</div></div>
+            </div>
+          </div>
+          <div class="event-cell">
+            <div class="event ta" data-type="ta" data-info='{"title":"MAS3105 TA Office Hours","time":"11:35 AM - 12:50 PM","location":"HCB 0316","type":"TA","instructor":"Dr. Ballas"}'>
+              <div class="event-title">MAS3105 TA</div>
+              <div class="event-details">
+                <div class="event-time">11:35 AM - 12:50 PM</div>
+                <div>HCB 0316 • Office Hours</div>
+              </div>
+            </div>
+          </div>
+          <div class="event-cell">
+            <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"11:35 AM - 12:50 PM","type":"Research"}'>
+              <div class="event-title">Research & Study</div>
+              <div class="event-details"><div class="event-time">11:35 AM - 12:50 PM</div></div>
+            </div>
+          </div>
+
+          <!-- 12:00 PM -->
+          <div class="time-cell">12:00 PM</div>
+          <div class="event-cell">
+            <div class="event ta" data-type="ta" data-info='{"title":"MAS3105 TA Office Hours","time":"12:00 PM - 12:50 PM","location":"HCB 0316","type":"TA","instructor":"Dr. Ballas"}'>
+              <div class="event-title">MAS3105 TA</div>
+              <div class="event-details">
+                <div class="event-time">12:00 PM - 12:50 PM</div>
+                <div>HCB 0316 • Office Hours</div>
+              </div>
+            </div>
+          </div>
+          <div class="event-cell">
+            <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"12:00 PM - 12:50 PM","type":"Research"}'>
+              <div class="event-title">Research & Study</div>
+              <div class="event-details"><div class="event-time">12:00 PM - 12:50 PM</div></div>
+            </div>
+          </div>
+          <div class="event-cell">
+            <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"12:00 PM - 12:50 PM","type":"Research"}'>
+              <div class="event-title">Research & Study</div>
+              <div class="event-details"><div class="event-time">12:00 PM - 12:50 PM</div></div>
+            </div>
+          </div>
+          <div class="event-cell">
+            <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"12:00 PM - 12:50 PM","type":"Research"}'>
+              <div class="event-title">Research & Study</div>
+              <div class="event-details"><div class="event-time">12:00 PM - 12:50 PM</div></div>
+            </div>
+          </div>
+          <div class="event-cell">
+            <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"12:00 PM - 12:50 PM","type":"Research"}'>
+              <div class="event-title">Research & Study</div>
+              <div class="event-details"><div class="event-time">12:00 PM - 12:50 PM</div></div>
+            </div>
+          </div>
+
+          <!-- 1:20 PM -->
+          <div class="time-cell">1:20 PM</div>
+          <div class="event-cell">
+            <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"1:20 PM - 2:10 PM","type":"Research"}'>
+              <div class="event-title">Research & Study</div>
+              <div class="event-details"><div class="event-time">1:20 PM - 2:10 PM</div></div>
+            </div>
+          </div>
+          <div class="event-cell">
+            <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"1:20 PM - 2:10 PM","type":"Research"}'>
+              <div class="event-title">Research & Study</div>
+              <div class="event-details"><div class="event-time">1:20 PM - 2:10 PM</div></div>
+            </div>
+          </div>
+          <div class="event-cell">
+            <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"1:20 PM - 2:10 PM","type":"Research"}'>
+              <div class="event-title">Research & Study</div>
+              <div class="event-details"><div class="event-time">1:20 PM - 2:10 PM</div></div>
+            </div>
+          </div>
+          <div class="event-cell">
+            <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"1:20 PM - 2:10 PM","type":"Research"}'>
+              <div class="event-title">Research & Study</div>
+              <div class="event-details"><div class="event-time">1:20 PM - 2:10 PM</div></div>
+            </div>
+          </div>
+          <div class="event-cell">
+            <div class="event course" data-type="course" data-info='{"title":"MAP6939-04","courseName":"Data Science and Machine Learning","time":"1:20 PM - 2:10 PM","location":"LOV 0106","type":"Course"}'>
+              <div class="event-title">MAP6939-04</div>
+              <div class="event-subtitle">Data Science and Machine Learning</div>
+              <div class="event-details">
+                <div class="event-time">1:20 PM - 2:10 PM</div>
+                <div>LOV 0106</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3:00 PM -->
+          <div class="time-cell">3:00 PM</div>
+          <div class="event-cell">
+            <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"3:00 PM - 4:00 PM","type":"Research"}'>
+              <div class="event-title">Research & Study</div>
+              <div class="event-details"><div class="event-time">3:00 PM - 4:00 PM</div></div>
+            </div>
+          </div>
+          <div class="event-cell">
+            <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"3:00 PM - 4:00 PM","type":"Research"}'>
+              <div class="event-title">Research & Study</div>
+              <div class="event-details"><div class="event-time">3:00 PM - 4:00 PM</div></div>
+            </div>
+          </div>
+          <div class="event-cell">
+            <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"3:00 PM - 4:00 PM","type":"Research"}'>
+              <div class="event-title">Research & Study</div>
+              <div class="event-details"><div class="event-time">3:00 PM - 4:00 PM</div></div>
+            </div>
+          </div>
+          <div class="event-cell">
+            <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"3:00 PM - 4:00 PM","type":"Research"}'>
+              <div class="event-title">Research & Study</div>
+              <div class="event-details"><div class="event-time">3:00 PM - 4:00 PM</div></div>
+            </div>
+          </div>
+          <div class="event-cell">
+            <div class="event office" data-type="office" data-info='{"title":"Office Hours","time":"3:00 PM - 4:00 PM","location":"TBD","type":"Office Hours"}'>
+              <div class="event-title">Office Hours</div>
+              <div class="event-details"><div class="event-time">3:00 PM - 4:00 PM</div></div>
+            </div>
+          </div>
+
+          <!-- 4:00 PM -->
+          <div class="time-cell">4:00 PM</div>
+          <div class="event-cell">
+            <div class="event office" data-type="office" data-info='{"title":"Office Hours","time":"4:00 PM - 5:00 PM","location":"TBD","type":"Office Hours"}'>
+              <div class="event-title">Office Hours</div>
+              <div class="event-details"><div class="event-time">4:00 PM - 5:00 PM</div></div>
+            </div>
+          </div>
+          <div class="event-cell">
+            <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"4:00 PM - 5:00 PM","type":"Research"}'>
+              <div class="event-title">Research & Study</div>
+              <div class="event-details"><div class="event-time">4:00 PM - 5:00 PM</div></div>
+            </div>
+          </div>
+          <div class="event-cell">
+            <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"4:00 PM - 5:00 PM","type":"Research"}'>
+              <div class="event-title">Research & Study</div>
+              <div class="event-details"><div class="event-time">4:00 PM - 5:00 PM</div></div>
+            </div>
+          </div>
+          <div class="event-cell">
+            <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"4:00 PM - 5:00 PM","type":"Research"}'>
+              <div class="event-title">Research & Study</div>
+              <div class="event-details"><div class="event-time">4:00 PM - 5:00 PM</div></div>
+            </div>
+          </div>
+          <div class="event-cell">
+            <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"4:00 PM - 5:00 PM","type":"Research"}'>
+              <div class="event-title">Research & Study</div>
+              <div class="event-details"><div class="event-time">4:00 PM - 5:00 PM</div></div>
+            </div>
+          </div>
+
+          <!-- 4:50 PM -->
+          <div class="time-cell">4:50 PM</div>
+          <div class="event-cell">
+            <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"4:50 PM - 6:05 PM","type":"Research"}'>
+              <div class="event-title">Research & Study</div>
+              <div class="event-details"><div class="event-time">4:50 PM - 6:05 PM</div></div>
+            </div>
+          </div>
+          <div class="event-cell">
+            <div class="event course" data-type="course" data-info='{"title":"MAP5615-01","courseName":"Monte Carlo Fin Math","time":"4:50 PM - 6:05 PM","location":"LOV 0301","type":"Course"}'>
+              <div class="event-title">MAP5615-01</div>
+              <div class="event-subtitle">Monte Carlo Fin Math</div>
+              <div class="event-details">
+                <div class="event-time">4:50 PM - 6:05 PM</div>
+                <div>LOV 0301</div>
+              </div>
+            </div>
+          </div>
+          <div class="event-cell">
+            <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"4:50 PM - 6:05 PM","type":"Research"}'>
+              <div class="event-title">Research & Study</div>
+              <div class="event-details"><div class="event-time">4:50 PM - 6:05 PM</div></div>
+            </div>
+          </div>
+          <div class="event-cell">
+            <div class="event course" data-type="course" data-info='{"title":"MAP5615-01","courseName":"Monte Carlo Fin Math","time":"4:50 PM - 6:05 PM","location":"LOV 0301","type":"Course"}'>
+              <div class="event-title">MAP5615-01</div>
+              <div class="event-subtitle">Monte Carlo Fin Math</div>
+              <div class="event-details">
+                <div class="event-time">4:50 PM - 6:05 PM</div>
+                <div>LOV 0301</div>
+              </div>
+            </div>
+          </div>
+          <div class="event-cell">
+            <div class="event research" data-type="research" data-info='{"title":"Research & Study Hours","time":"4:50 PM - 6:05 PM","type":"Research"}'>
+              <div class="event-title">Research & Study</div>
+              <div class="event-details"><div class="event-time">4:50 PM - 6:05 PM</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="legend">
+        <div class="legend-item">
+          <div class="legend-color course"></div>
+          <div class="legend-label">Courses</div>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color ta"></div>
+          <div class="legend-label">TA Duties</div>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color office"></div>
+          <div class="legend-label">Office Hours</div>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color proctor"></div>
+          <div class="legend-label">Proctoring</div>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color research"></div>
+          <div class="legend-label">Research & Study</div>
+        </div>
+      </div>
     </div>
 
+    <!-- Schedule modal -->
     <div class="modal" id="eventModal">
-        <div class="modal-content">
-            <button class="close-modal" onclick="closeModal()">×</button>
-            <div class="modal-header" id="modalTitle"></div>
-            <div class="modal-section">
-                <div class="modal-label">Time</div>
-                <div class="modal-value" id="modalTime"></div>
-            </div>
-            <div class="modal-section">
-                <div class="modal-label">Location</div>
-                <div class="modal-value" id="modalLocation"></div>
-            </div>
-            <div class="modal-section" id="modalTypeSection">
-                <div class="modal-label">Type</div>
-                <div class="modal-value" id="modalType"></div>
-            </div>
-            <div class="modal-section" id="modalInstructorSection" style="display: none;">
-                <div class="modal-label">Instructor</div>
-                <div class="modal-value" id="modalInstructor"></div>
-            </div>
+      <div class="modal-content">
+        <button class="close-modal" onclick="closeScheduleModal()">×</button>
+        <div class="modal-header" id="modalTitle"></div>
+
+        <div class="modal-section">
+          <div class="modal-label">Time</div>
+          <div class="modal-value" id="modalTime"></div>
         </div>
+
+        <div class="modal-section">
+          <div class="modal-label">Location</div>
+          <div class="modal-value" id="modalLocation"></div>
+        </div>
+
+        <div class="modal-section">
+          <div class="modal-label">Type</div>
+          <div class="modal-value" id="modalType"></div>
+        </div>
+
+        <div class="modal-section" id="modalInstructorSection" style="display:none;">
+          <div class="modal-label">Instructor</div>
+          <div class="modal-value" id="modalInstructor"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================
+       HOMEWORK PAGE
+  ========================== -->
+  <div id="homework-page" class="page">
+    <div class="header">
+      <div class="header-content">
+        <h1>Homework & Assignments</h1>
+        <p class="subtitle">Track your assignments and due dates</p>
+      </div>
     </div>
 
-    <script>
-        // Mobile layout reorganization
-        function reorganizeForMobile() {
-            const scheduleGrid = document.querySelector('.schedule-grid');
-            const isMobile = window.innerWidth <= 768;
+    <div class="container">
+      <button class="add-homework-btn" onclick="openHomeworkModal()">+ Add New Homework</button>
+      <div id="homework-grid" class="homework-grid"></div>
 
-            if (isMobile && !scheduleGrid.classList.contains('mobile-organized')) {
-                // Create mobile day groups
-                const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
-                const dayEvents = {
-                    'Monday': [],
-                    'Tuesday': [],
-                    'Wednesday': [],
-                    'Thursday': [],
-                    'Friday': []
-                };
+      <div id="empty-homework" class="empty-state" style="display:none;">
+        <div class="empty-state-icon">📚</div>
+        <div class="empty-state-text">No homework yet. Click "Add New Homework" to get started!</div>
+      </div>
+    </div>
+  </div>
 
-                // Collect all events by day
-                document.querySelectorAll('.event').forEach(event => {
-                    const info = JSON.parse(event.dataset.info);
-                    if (info.days) {
-                        info.days.split('').forEach(day => {
-                            const dayName = day === 'M' ? 'Monday' :
-                                          day === 'T' ? 'Tuesday' :
-                                          day === 'W' ? 'Wednesday' :
-                                          day === 'R' ? 'Thursday' :
-                                          day === 'F' ? 'Friday' : null;
-                            if (dayName) {
-                                dayEvents[dayName].push(event.cloneNode(true));
-                            }
-                        });
-                    } else {
-                        // For events without days specified, get from parent structure
-                        const parent = event.closest('.event-cell');
-                        const dayIndex = Array.from(parent.parentElement.children).indexOf(parent) - 1;
-                        if (dayIndex >= 0 && dayIndex < days.length) {
-                            dayEvents[days[dayIndex]].push(event.cloneNode(true));
-                        }
-                    }
-                });
+  <!-- =========================
+       DAILY UPDATES PAGE
+  ========================== -->
+  <div id="daily-updates-page" class="page">
+    <div class="header">
+      <div class="header-content">
+        <h1>Daily Updates</h1>
+        <p class="subtitle">Track your project progress</p>
+      </div>
+    </div>
 
-                // Clear and rebuild for mobile
-                scheduleGrid.innerHTML = '';
-                
-                days.forEach(day => {
-                    if (dayEvents[day].length > 0) {
-                        const dayGroup = document.createElement('div');
-                        dayGroup.className = 'mobile-day-group';
-                        
-                        const dayHeader = document.createElement('div');
-                        dayHeader.className = 'mobile-day-header';
-                        dayHeader.innerHTML = `
-                            <span>${day}</span>
-                            <span class="mobile-day-count">${dayEvents[day].length} events</span>
-                        `;
-                        
-                        const eventsContainer = document.createElement('div');
-                        eventsContainer.className = 'mobile-events';
-                        
-                        // Sort events by time
-                        dayEvents[day].sort((a, b) => {
-                            const timeA = JSON.parse(a.dataset.info).time.split(' - ')[0];
-                            const timeB = JSON.parse(b.dataset.info).time.split(' - ')[0];
-                            return timeA.localeCompare(timeB);
-                        });
-                        
-                        dayEvents[day].forEach(event => {
-                            const wrapper = document.createElement('div');
-                            wrapper.className = 'mobile-event-wrapper';
-                            wrapper.appendChild(event);
-                            eventsContainer.appendChild(wrapper);
-                        });
-                        
-                        dayGroup.appendChild(dayHeader);
-                        dayGroup.appendChild(eventsContainer);
-                        scheduleGrid.appendChild(dayGroup);
-                    }
-                });
+    <div class="container">
+      <button class="add-project-btn" onclick="openProjectModal()">+ Add New Project</button>
+      <div id="projects-grid" class="projects-grid"></div>
 
-                scheduleGrid.classList.add('mobile-organized');
-                
-                // Re-attach event listeners
-                attachEventListeners();
-            } else if (!isMobile && scheduleGrid.classList.contains('mobile-organized')) {
-                // Reload page to restore desktop view
-                location.reload();
-            }
-        }
+      <div id="empty-projects" class="empty-state" style="display:none;">
+        <div class="empty-state-icon">📊</div>
+        <div class="empty-state-text">No projects yet. Click "Add New Project" to start tracking!</div>
+      </div>
+    </div>
+  </div>
 
-        // Attach event listeners to all events
-        function attachEventListeners() {
-            document.querySelectorAll('.event').forEach(event => {
-                event.removeEventListener('click', handleEventClick);
-                event.addEventListener('click', handleEventClick);
-            });
-        }
+  <!-- =========================
+       HOMEWORK MODAL
+  ========================== -->
+  <div id="homework-modal" class="modal">
+    <div class="modal-content">
+      <button class="close-modal" onclick="closeHomeworkModal()">×</button>
+      <div class="modal-header" id="homework-modal-title">Add Homework</div>
 
-        function handleEventClick(e) {
-            const event = e.currentTarget;
-            const info = JSON.parse(event.dataset.info);
-            document.getElementById('modalTitle').textContent = info.title;
-            
-            // Add course name if available
-            if (info.courseName) {
-                document.getElementById('modalTitle').innerHTML = info.title + '<br><small style="font-size: 0.7em; font-weight: 400; opacity: 0.8;">' + info.courseName + '</small>';
-            }
-            
-            document.getElementById('modalTime').textContent = info.time;
-            document.getElementById('modalLocation').textContent = info.location || 'TBD';
-            document.getElementById('modalType').textContent = info.type;
-            
-            if (info.instructor) {
-                document.getElementById('modalInstructorSection').style.display = 'block';
-                document.getElementById('modalInstructor').textContent = info.instructor;
-            } else {
-                document.getElementById('modalInstructorSection').style.display = 'none';
-            }
+      <form id="homework-form" onsubmit="saveHomework(event)">
+        <div class="form-group">
+          <label class="form-label">Title *</label>
+          <input type="text" id="hw-title" class="form-input" required />
+        </div>
 
-            document.getElementById('eventModal').style.display = 'block';
-        }
+        <div class="form-group">
+          <label class="form-label">Course</label>
+          <select id="hw-course" class="form-select">
+            <option value="">Select Course</option>
+            <option value="ECO5428-01">ECO5428-01 - Time Series Analysis</option>
+            <option value="MAP5615-01">MAP5615-01 - Monte Carlo Fin Math</option>
+            <option value="MAP5932-03">MAP5932-03 - Stochastic Analysis</option>
+            <option value="MAP5932-04">MAP5932-04 - Stochastic Algorithms</option>
+            <option value="MAP6939-04">MAP6939-04 - Data Science & ML</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
 
-        // Filter functionality
-        const filterBtns = document.querySelectorAll('.filter-btn');
-        const events = document.querySelectorAll('.event');
+        <div class="form-group">
+          <label class="form-label">Due Date *</label>
+          <input type="datetime-local" id="hw-due" class="form-input" required />
+        </div>
 
-        filterBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const filter = btn.dataset.filter;
-                
-                filterBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
+        <div class="form-group">
+          <label class="form-label">Description</label>
+          <textarea id="hw-description" class="form-textarea"></textarea>
+        </div>
 
-                document.querySelectorAll('.event').forEach(event => {
-                    if (filter === 'all') {
-                        event.style.display = 'block';
-                        if (event.closest('.mobile-event-wrapper')) {
-                            event.closest('.mobile-event-wrapper').style.display = 'block';
-                        }
-                    } else {
-                        if (event.dataset.type === filter) {
-                            event.style.display = 'block';
-                            if (event.closest('.mobile-event-wrapper')) {
-                                event.closest('.mobile-event-wrapper').style.display = 'block';
-                            }
-                        } else {
-                            event.style.display = 'none';
-                            if (event.closest('.mobile-event-wrapper')) {
-                                event.closest('.mobile-event-wrapper').style.display = 'none';
-                            }
-                        }
-                    }
-                });
+        <input type="hidden" id="hw-id" />
 
-                // Update day counts on mobile
-                document.querySelectorAll('.mobile-day-group').forEach(group => {
-                    const visibleEvents = group.querySelectorAll('.event[style*="display: block"], .event:not([style*="display: none"])').length;
-                    const countBadge = group.querySelector('.mobile-day-count');
-                    if (countBadge) {
-                        countBadge.textContent = `${visibleEvents} events`;
-                    }
-                });
-            });
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" onclick="closeHomeworkModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- =========================
+       PROJECT MODAL
+  ========================== -->
+  <div id="project-modal" class="modal">
+    <div class="modal-content">
+      <button class="close-modal" onclick="closeProjectModal()">×</button>
+      <div class="modal-header" id="project-modal-title">Add Project</div>
+
+      <form id="project-form" onsubmit="saveProject(event)">
+        <div class="form-group">
+          <label class="form-label">Project Name *</label>
+          <input type="text" id="proj-name" class="form-input" required />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Progress (%) *</label>
+          <input type="number" id="proj-progress" class="form-input" min="0" max="100" value="0" required />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Notes</label>
+          <textarea id="proj-notes" class="form-textarea" placeholder="Today's progress, next steps, etc."></textarea>
+        </div>
+
+        <input type="hidden" id="proj-id" />
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" onclick="closeProjectModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    /* =========================
+       NAV / PAGES
+    ========================== */
+    function showPage(pageName, linkEl) {
+      document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+      document.querySelectorAll(".nav-link").forEach(a => a.classList.remove("active"));
+
+      const page = document.getElementById(`${pageName}-page`);
+      if (page) page.classList.add("active");
+      if (linkEl) linkEl.classList.add("active");
+
+      document.getElementById("navMenu").classList.remove("active");
+
+      // Ensure schedule click listeners exist when returning
+      if (pageName === "schedule") initSchedule();
+    }
+
+    function toggleMobileMenu() {
+      document.getElementById("navMenu").classList.toggle("active");
+    }
+
+    /* =========================
+       LOCAL STORAGE
+    ========================== */
+    function getHomework() {
+      return JSON.parse(localStorage.getItem("homework") || "[]");
+    }
+    function saveHomeworkData(homework) {
+      localStorage.setItem("homework", JSON.stringify(homework));
+    }
+
+    function getProjects() {
+      return JSON.parse(localStorage.getItem("projects") || "[]");
+    }
+    function saveProjectsData(projects) {
+      localStorage.setItem("projects", JSON.stringify(projects));
+    }
+
+    /* =========================
+       HOMEWORK
+    ========================== */
+    function renderHomework() {
+      const homework = getHomework();
+      const grid = document.getElementById("homework-grid");
+      const empty = document.getElementById("empty-homework");
+
+      if (homework.length === 0) {
+        grid.innerHTML = "";
+        empty.style.display = "block";
+        return;
+      }
+
+      empty.style.display = "none";
+
+      grid.innerHTML = homework
+        .sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate))
+        .map(hw => {
+          const dueDate = new Date(hw.dueDate);
+          const now = new Date();
+          const msLeft = dueDate - now;
+          const isOverdue = msLeft < 0;
+          const isUrgent = msLeft >= 0 && msLeft < 86400000 * 3; // 3 days
+
+          return `
+            <div class="homework-card ${hw.completed ? "completed" : ""}">
+              <div class="homework-header">
+                <div>
+                  <div class="homework-title">${escapeHtml(hw.title)}</div>
+                  ${hw.course ? `<div class="homework-course">${escapeHtml(hw.course)}</div>` : ""}
+                </div>
+              </div>
+
+              <div class="homework-due ${isOverdue ? "urgent" : (isUrgent ? "warning" : "")}">
+                📅 Due: ${dueDate.toLocaleString()}
+              </div>
+
+              ${hw.description ? `<div class="homework-notes">${escapeHtml(hw.description)}</div>` : ""}
+
+              <div class="homework-actions">
+                ${!hw.completed ? `<button class="homework-btn complete-btn" onclick="toggleComplete('${hw.id}')">✓ Complete</button>` : ""}
+                <button class="homework-btn edit-btn" onclick="editHomework('${hw.id}')">✏️ Edit</button>
+                <button class="homework-btn delete-btn" onclick="deleteHomework('${hw.id}')">🗑️ Delete</button>
+              </div>
+            </div>
+          `;
+        })
+        .join("");
+    }
+
+    function openHomeworkModal(hwId = null) {
+      const modal = document.getElementById("homework-modal");
+      const form = document.getElementById("homework-form");
+      const title = document.getElementById("homework-modal-title");
+
+      if (hwId) {
+        const homework = getHomework().find(h => h.id === hwId);
+        title.textContent = "Edit Homework";
+        document.getElementById("hw-id").value = hwId;
+        document.getElementById("hw-title").value = homework.title;
+        document.getElementById("hw-course").value = homework.course;
+        document.getElementById("hw-due").value = homework.dueDate;
+        document.getElementById("hw-description").value = homework.description || "";
+      } else {
+        title.textContent = "Add Homework";
+        form.reset();
+        document.getElementById("hw-id").value = "";
+      }
+
+      modal.classList.add("active");
+    }
+
+    function closeHomeworkModal() {
+      document.getElementById("homework-modal").classList.remove("active");
+    }
+
+    function saveHomework(e) {
+      e.preventDefault();
+
+      const id = document.getElementById("hw-id").value || Date.now().toString();
+      const homework = getHomework();
+
+      const newHw = {
+        id,
+        title: document.getElementById("hw-title").value.trim(),
+        course: document.getElementById("hw-course").value,
+        dueDate: document.getElementById("hw-due").value,
+        description: document.getElementById("hw-description").value.trim(),
+        completed: false
+      };
+
+      const idx = homework.findIndex(h => h.id === id);
+      if (idx >= 0) homework[idx] = { ...homework[idx], ...newHw };
+      else homework.push(newHw);
+
+      saveHomeworkData(homework);
+      renderHomework();
+      closeHomeworkModal();
+    }
+
+    function editHomework(id) { openHomeworkModal(id); }
+
+    function deleteHomework(id) {
+      if (confirm("Are you sure you want to delete this homework?")) {
+        const homework = getHomework().filter(h => h.id !== id);
+        saveHomeworkData(homework);
+        renderHomework();
+      }
+    }
+
+    function toggleComplete(id) {
+      const homework = getHomework();
+      const hw = homework.find(h => h.id === id);
+      if (!hw) return;
+      hw.completed = !hw.completed;
+      saveHomeworkData(homework);
+      renderHomework();
+    }
+
+    /* =========================
+       PROJECTS (DAILY UPDATES)
+    ========================== */
+    function renderProjects() {
+      const projects = getProjects();
+      const grid = document.getElementById("projects-grid");
+      const empty = document.getElementById("empty-projects");
+
+      if (projects.length === 0) {
+        grid.innerHTML = "";
+        empty.style.display = "block";
+        return;
+      }
+
+      empty.style.display = "none";
+
+      grid.innerHTML = projects
+        .sort((a, b) => new Date(b.lastUpdated) - new Date(a.lastUpdated))
+        .map(p => `
+          <div class="project-card">
+            <div class="project-header">
+              <div class="project-title">${escapeHtml(p.name)}</div>
+              <div class="homework-actions">
+                <button class="homework-btn edit-btn" onclick="editProject('${p.id}')">✏️ Edit</button>
+                <button class="homework-btn delete-btn" onclick="deleteProject('${p.id}')">🗑️ Delete</button>
+              </div>
+            </div>
+
+            <div class="project-progress">
+              <div class="progress-label">
+                <span>Progress</span>
+                <span>${p.progress}%</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill" style="width:${p.progress}%"></div>
+              </div>
+            </div>
+
+            ${p.notes ? `<div class="project-notes">${escapeHtml(p.notes)}</div>` : ""}
+
+            <div style="font-size:0.85rem;color:var(--text-light);margin-top:1rem;">
+              Last updated: ${new Date(p.lastUpdated).toLocaleString()}
+            </div>
+          </div>
+        `)
+        .join("");
+    }
+
+    function openProjectModal(projId = null) {
+      const modal = document.getElementById("project-modal");
+      const form = document.getElementById("project-form");
+      const title = document.getElementById("project-modal-title");
+
+      if (projId) {
+        const p = getProjects().find(x => x.id === projId);
+        title.textContent = "Edit Project";
+        document.getElementById("proj-id").value = projId;
+        document.getElementById("proj-name").value = p.name;
+        document.getElementById("proj-progress").value = p.progress;
+        document.getElementById("proj-notes").value = p.notes || "";
+      } else {
+        title.textContent = "Add Project";
+        form.reset();
+        document.getElementById("proj-id").value = "";
+      }
+
+      modal.classList.add("active");
+    }
+
+    function closeProjectModal() {
+      document.getElementById("project-modal").classList.remove("active");
+    }
+
+    function saveProject(e) {
+      e.preventDefault();
+
+      const id = document.getElementById("proj-id").value || Date.now().toString();
+      const projects = getProjects();
+
+      const newProj = {
+        id,
+        name: document.getElementById("proj-name").value.trim(),
+        progress: parseInt(document.getElementById("proj-progress").value, 10),
+        notes: document.getElementById("proj-notes").value.trim(),
+        lastUpdated: new Date().toISOString()
+      };
+
+      const idx = projects.findIndex(p => p.id === id);
+      if (idx >= 0) projects[idx] = newProj;
+      else projects.push(newProj);
+
+      saveProjectsData(projects);
+      renderProjects();
+      closeProjectModal();
+    }
+
+    function editProject(id) { openProjectModal(id); }
+
+    function deleteProject(id) {
+      if (confirm("Are you sure you want to delete this project?")) {
+        const projects = getProjects().filter(p => p.id !== id);
+        saveProjectsData(projects);
+        renderProjects();
+      }
+    }
+
+    /* =========================
+       SCHEDULE
+    ========================== */
+    let scheduleInitialized = false;
+
+    function initSchedule() {
+      if (scheduleInitialized) return;
+      scheduleInitialized = true;
+
+      // Click listeners for modal
+      attachScheduleEventListeners();
+
+      // Filters
+      setupScheduleFilters();
+    }
+
+    function attachScheduleEventListeners() {
+      document.querySelectorAll("#schedule-page .event").forEach(el => {
+        el.addEventListener("click", () => {
+          const info = JSON.parse(el.dataset.info || "{}");
+          openScheduleModal(info);
         });
+      });
+    }
 
-        // Modal functionality
-        attachEventListeners();
+    function setupScheduleFilters() {
+      const page = document.getElementById("schedule-page");
+      const buttons = page.querySelectorAll(".filter-btn");
 
-        function closeModal() {
-            document.getElementById('eventModal').style.display = 'none';
-        }
+      buttons.forEach(btn => {
+        btn.addEventListener("click", () => {
+          const filter = btn.dataset.filter;
 
-        document.getElementById('eventModal').addEventListener('click', (e) => {
-            if (e.target.id === 'eventModal') {
-                closeModal();
-            }
+          buttons.forEach(b => b.classList.remove("active"));
+          btn.classList.add("active");
+
+          page.querySelectorAll(".event").forEach(ev => {
+            const show = (filter === "all" || ev.dataset.type === filter);
+            ev.style.display = show ? "block" : "none";
+          });
         });
+      });
+    }
 
-        // Animation on load
-        document.addEventListener('DOMContentLoaded', () => {
-            reorganizeForMobile();
-            
-            document.querySelectorAll('.event').forEach((event, index) => {
-                event.style.animationDelay = `${index * 0.05}s`;
-            });
-        });
+    function openScheduleModal(info) {
+      const modal = document.getElementById("eventModal");
+      const titleEl = document.getElementById("modalTitle");
 
-        // Reorganize on resize
-        let resizeTimer;
-        window.addEventListener('resize', () => {
-            clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(() => {
-                reorganizeForMobile();
-            }, 250);
-        });
-    </script>
+      if (info.courseName) {
+        titleEl.innerHTML =
+          `${escapeHtml(info.title || "")}<br><small style="font-size:0.7em;font-weight:500;opacity:0.8;">${escapeHtml(info.courseName)}</small>`;
+      } else {
+        titleEl.textContent = info.title || "";
+      }
+
+      document.getElementById("modalTime").textContent = info.time || "";
+      document.getElementById("modalLocation").textContent = info.location || "TBD";
+      document.getElementById("modalType").textContent = info.type || "";
+
+      const instrSec = document.getElementById("modalInstructorSection");
+      const instrVal = document.getElementById("modalInstructor");
+
+      if (info.instructor) {
+        instrSec.style.display = "block";
+        instrVal.textContent = info.instructor;
+      } else {
+        instrSec.style.display = "none";
+        instrVal.textContent = "";
+      }
+
+      modal.classList.add("active");
+    }
+
+    function closeScheduleModal() {
+      document.getElementById("eventModal").classList.remove("active");
+    }
+
+    /* =========================
+       SHARED HELPERS
+    ========================== */
+    function escapeHtml(str) {
+      return String(str)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    // Close modals when clicking the dark overlay
+    window.addEventListener("click", (e) => {
+      if (e.target.classList && e.target.classList.contains("modal")) {
+        e.target.classList.remove("active");
+      }
+    });
+
+    /* =========================
+       INITIALIZE
+    ========================== */
+    document.addEventListener("DOMContentLoaded", () => {
+      renderHomework();
+      renderProjects();
+      initSchedule(); // schedule is the default visible page
+    });
+  </script>
 </body>
 </html>
